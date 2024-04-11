@@ -4,18 +4,18 @@
 ## Микросервисы:  
 ### 1. ItemService
 Сущности:  
-`Customer` - класс покупателя, имеет следующие поля: _customer_id_, _first_name_, _last_name_, _balance_ (сколько денег на счету), _goods_ (список купленных товаров), _bet_ (текущая ставка)  
-`Good` - класс товара, имеет следующие поля: _good_id_, _name_, _price_ (по какой ставке товар доступен сейчас), _owner_ (тот, кто купил), _seller_ (тот, кто продаёт), _time_ (оставшееся время аукциона), _start_time_ (время начала аукциона для данного товара), _status_ (куплен товар или ещё нет), _min_bet_ (минимальная ставка, на которую можно повышать стоимость покупки товара, задаётся продавцом)
-`Seller` - класс продавца, имеет следующие поля: _seller_id_, _first_name_, _last_name_, _balance_ (сколько денег на счету), _goods_ (cписок продаваемых товаров)  
-Для каждой сущности должны быть созданы отдельные репозитории: `CustomerRepository`, `GoodRepository`, `SellerRepository`.    
+`Customer` - класс покупателя, имеет следующие поля: _customer_id_, _first_name_, _last_name_, _balance_ (сколько денег на счету), _products_ (список купленных товаров), _bet_ (текущая ставка)  
+`Product` - класс товара, имеет следующие поля: _product_id_, _name_, _price_ (по какой ставке товар доступен сейчас), _owner_ (тот, кто купил), _seller_ (тот, кто продаёт), _time_ (оставшееся время аукциона), _start_time_ (время начала аукциона для данного товара), _status_ (куплен товар или ещё нет), _min_bet_ (минимальная ставка, на которую можно повышать стоимость покупки товара, задаётся продавцом)
+`Seller` - класс продавца, имеет следующие поля: _seller_id_, _first_name_, _last_name_, _balance_ (сколько денег на счету), _products_ (cписок продаваемых товаров)  
+Для каждой сущности должны быть созданы отдельные репозитории: `CustomerRepository`, `ProductRepository`, `SellerRepository`.    
 Все методы взаимодействия с сущностями прописываются в сервисах:  
-`CustomerService`: createCustomer, deleteCustomer, updateCustomer, getCustomer, getBalance (по _customer_id_), increaseBalance (по _customer_id_ на какую-то конкретную сумму), decreaseBalance (по _customer_id_ на какую-то конкретную сумму), buyGood, deleteGood, increaseBet (по _customer_id_ на какую-то конкретную сумму);  
-`GoodService`: createGood, deleteGood, updateGood, getCurrentPrice, changeCurrentPrice;
-`SellerService`: createSeller, deleteSeller, getSellerByGood (узнать продавца по товару), getSeller;
+`CustomerService`: createCustomer, deleteCustomer, updateCustomer, getCustomer, getBalance (по _customer_id_), increaseBalance (по _customer_id_ на какую-то конкретную сумму), decreaseBalance (по _customer_id_ на какую-то конкретную сумму), buyProduct, deleteProduct, increaseBet (по _customer_id_ на какую-то конкретную сумму);  
+`ProductService`: createProduct, deleteProduct, updateProduct, getCurrentPrice, changeCurrentPrice;
+`SellerService`: createSeller, deleteSeller, getSellerByProduct (узнать продавца по товару), getSeller;
 Связи сущностей:  
-`Custimer` и `Good` - oneToMany;
-`Seller` и `Good` - oneToMany;
-`Good` и `Seller` - manyToOne;  
+`Custimer` и `Product` - oneToMany;
+`Seller` и `Product` - oneToMany;
+`Product` и `Seller` - manyToOne;  
 ### 2. AuctionService
 В данном сервисе происходят основные действия аукциона:  
 1. 
@@ -32,5 +32,5 @@
 2. Во время покупки деньги со счёта покупателя должны быть отправлены на счёт владельца товара.  
 3. Пользователь должен уметь снимать деньги со своего счёта (не более того, что там лежит).  
 4. Пользователь должен уметь пополнять свой счёт.  
-Должен быть контроллер `PayController` со следующими endpoints: checkBalance, payGood, withdrawMoney, depositMoney;
+Должен быть контроллер `PayController` со следующими endpoints: checkBalance, payProduct, withdrawMoney, depositMoney;
 И соответствующий сервис `PayService` с теми же методами. 
