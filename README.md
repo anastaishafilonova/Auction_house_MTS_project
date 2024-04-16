@@ -9,17 +9,19 @@
 `Seller` - класс продавца, имеет следующие поля: _seller_id_, _first_name_, _last_name_, _balance_ (сколько денег на счету), _products_ (cписок продаваемых товаров)  
 Для каждой сущности должны быть созданы отдельные репозитории: `CustomerRepository`, `ProductRepository`, `SellerRepository`.    
 Все методы взаимодействия с сущностями прописываются в сервисах:  
-`CustomerService`: createCustomer, deleteCustomer, updateCustomer, getCustomer, getBalance (по _customer_id_), increaseBalance (по _customer_id_ на какую-то конкретную сумму), decreaseBalance (по _customer_id_ на какую-то конкретную сумму), buyProduct, deleteProduct, increaseBet (по _customer_id_ на какую-то конкретную сумму);  
+`CustomerService`: createCustomer, deleteCustomer, updateCustomer, getCustomer, getBalance (по _customer_id_), increaseBalance (по _customer_id_ на какую-то конкретную сумму), decreaseBalance (по _customer_id_ на какую-то конкретную сумму);  
 `ProductService`: createProduct, deleteProduct, updateProduct, getCurrentPrice, changeCurrentPrice;
 `SellerService`: createSeller, deleteSeller, getSellerByProduct (узнать продавца по товару), getSeller;
 Связи сущностей:  
-`Custimer` и `Product` - oneToMany;
+`Customer` и `Product` - oneToMany;
 `Seller` и `Product` - oneToMany;
 `Product` и `Seller` - manyToOne;  
 ### 2. AuctionService
-В данном сервисе происходят основные действия аукциона:  
-1. 
-
+В данном сервисе происходят основные действия аукциона:   
+1. `buyProduct`   
+2. `deleteProduct`  
+3. `increaseBet` (по _customer_id_ на какую-то конкретную сумму)  
+Должны быть реализованы соответствующие endpoint-ы в `AuctionController`. Необходимо удалять товар с аукциона по истечении времени.  
 ### 3. AuthorizationService  
 В данном сервисе происходит авторизация, регистрация пользователей, назначение ролей.  
 Пользователь может зарегистрироваться и авторизоваться под одной из ролей: customer / seller. 
