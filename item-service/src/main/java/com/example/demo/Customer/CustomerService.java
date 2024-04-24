@@ -21,30 +21,38 @@ public class CustomerService {
 
   protected CustomerService() {}
   @Transactional
-  public CustomerResponse createCustomer(String firstName, String lastName, int balance, int bet){
-    return null;
+  public Customer createCustomer(String firstName, String lastName){
+    if (customerRepository.findByFirstNameAndLastName(firstName, lastName) != null) {
+      return customerRepository.findByFirstNameAndLastName(firstName, lastName);
+    } else {
+      Customer customer = new Customer(firstName, lastName);
+      return customerRepository.save(customer);
+    }
   }
 
-//  @Transactional
-//  public void updateCustomer(Long id, String firstName, String lastName, int balance, int bet){}
   @Transactional
   public void deleteCustomer(Long id){
+    Customer customer = customerRepository.findById(id).orElseThrow();
+    customerRepository.delete(customer);
   }
 
   @Transactional
   public int getBalance(Long id){
-    return 0;
+    Customer customer = customerRepository.findById(id).orElseThrow();
+    return customer.getBalance();
   }
 
   @Transactional
-  public void increaseBalance(Long id, int delta){
+  public CustomerResponse increaseBalance(Long id, int delta){
+    Customer customer = customerRepository.findById(id).orElseThrow();
+    customer.setBalance(customer.getBalance() + delta);
+    return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
   }
 
   @Transactional
-  public void decreaseBalance(Long id, int delta){
+  public CustomerResponse decreaseBalance(Long id, int delta){
+    Customer customer = customerRepository.findById(id).orElseThrow();
+    customer.setBalance(customer.getBalance() - delta);
+    return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
   }
-
-
-
-
 }

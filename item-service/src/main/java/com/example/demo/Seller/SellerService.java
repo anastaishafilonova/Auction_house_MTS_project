@@ -23,21 +23,21 @@ public class SellerService {
     this.sellerRepository = sellerRepository;
   }
 
-
   protected SellerService() {}
   @Transactional
-  public SellerResponse createSeller(String firstName, String lastName){
-    return null;
+  public Seller createSeller(String firstName, String lastName){
+    if (sellerRepository.findByFirstNameAndLastName(firstName, lastName) != null) {
+      return sellerRepository.findByFirstNameAndLastName(firstName, lastName);
+    } else {
+      Seller seller = new Seller(firstName, lastName);
+      return sellerRepository.save(seller);
+    }
   }
 
-  //  @Transactional
-  // public void updateSeller(Long id, String firstName, String lastName){}
   @Transactional
   public void deleteSeller(Long id){
+    Seller seller = sellerRepository.findById(id).orElseThrow();
+    sellerRepository.delete(seller);
   }
 
-  @Transactional
-  public Long getSellerByProduct(Product product){
-    return 0l;
-  }
 }
