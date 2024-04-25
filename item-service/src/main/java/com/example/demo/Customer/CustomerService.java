@@ -19,7 +19,6 @@ public class CustomerService {
     this.customerRepository = customerRepository;
   }
 
-  protected CustomerService() {}
   @Transactional
   public Customer createCustomer(String firstName, String lastName){
     if (customerRepository.findByFirstNameAndLastName(firstName, lastName) != null) {
@@ -37,7 +36,7 @@ public class CustomerService {
   }
 
   @Transactional
-  public int getBalance(Long id){
+  public int getBalanceCustomer(Long id){
     Customer customer = customerRepository.findById(id).orElseThrow();
     return customer.getBalance();
   }

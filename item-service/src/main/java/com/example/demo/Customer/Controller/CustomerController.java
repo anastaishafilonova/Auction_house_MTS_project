@@ -27,19 +27,19 @@ public class CustomerController {
     customerService.deleteCustomer(id);
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/increase/{id}")
   public CustomerResponse increaseBalance(@PathVariable Long id, @RequestBody Request.RequestToIncreaseBalance request) {
     return customerService.increaseBalance(id, request.getDelta());
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/decrease/{id}")
   public CustomerResponse decreaseBalance(@PathVariable Long id, @RequestBody Request.RequestToDecreaseBalance request) {
     return customerService.decreaseBalance(id, request.getDelta());
   }
 
   @GetMapping("/{id}")
-  public int getBalance(@PathVariable Long id) {
-    return customerService.getBalance(id);
+  public int getBalanceCustomer(@PathVariable Long id) {
+    return customerService.getBalanceCustomer(id);
   }
 
 }

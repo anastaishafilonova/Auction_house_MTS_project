@@ -16,8 +16,6 @@ public class ProductController {
     this.productService = productService;
   }
 
-  protected ProductController(){
-  }
 
   @PostMapping("")
   public Product createProduct(@RequestBody Request.RequestToCreateProduct request) {
@@ -34,12 +32,12 @@ public class ProductController {
     return productService.changeCurrentPrice(id, request.getNewPrice());
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/price/{id}")
   public int getProductPrice(@PathVariable Long id) {
     return productService.getProductPrice(id);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/seller/{id}")
   public Long getSellerByProduct(@PathVariable Long id) {
     return productService.getSellerByProduct(id);
   }

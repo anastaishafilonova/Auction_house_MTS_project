@@ -25,7 +25,7 @@ public class Seller {
   @Column(name = "balance")
   private int balance = 0;
 
-  @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @OneToMany(mappedBy = "seller", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private ArrayList<Product> products;
 
   public Seller(String firstName, String lastName) {

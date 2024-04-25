@@ -26,7 +26,7 @@ public class Customer {
   @Column(name = "balance")
   private int balance = 0;
 
-  @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private ArrayList<Product> products;
 
   @Column(name = "bet")

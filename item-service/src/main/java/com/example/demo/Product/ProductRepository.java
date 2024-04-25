@@ -7,10 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-  int getProductPrice(Long id);
-  void changeCurrentPrice(Long id, int newPrice);
-
-  public Long getSellerByProduct(Long idProduct);
 
   Product findByName(String name);
 }

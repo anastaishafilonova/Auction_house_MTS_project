@@ -5,6 +5,7 @@ import com.example.demo.Customer.CustomerRepository;
 import com.example.demo.Customer.CustomerService;
 import com.example.demo.Product.Controller.ProductResponse;
 import com.example.demo.Seller.Seller;
+import com.example.demo.Seller.SellerRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +18,16 @@ import java.time.LocalDateTime;
 @Component
 public class ProductService {
   private ProductRepository productRepository;
-  private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+  private SellerRepository sellerRepository;
 
   @Autowired
-  public ProductService(ProductRepository productRepository) {
+  public ProductService(ProductRepository productRepository, SellerRepository sellerRepository) {
     this.productRepository = productRepository;
+    this.sellerRepository = sellerRepository;
   }
+
+  private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
 
 
   protected ProductService() {
@@ -33,7 +38,8 @@ public class ProductService {
     if (productRepository.findByName(name) != null) {
       return productRepository.findByName(name);
     } else {
-      Product product = new Product(name, price, sellerId, startTime, finishTime, minBet);
+      Seller seller = sellerRepository.findById(sellerId).orElseThrow();;
+      Product product = new Product(name, price, seller, startTime, finishTime, minBet);
       return productRepository.save(product);
     }
   }
@@ -55,13 +61,13 @@ public class ProductService {
     Product product = productRepository.findById(id).orElseThrow();
     product.setPrice(newPrice);
     productRepository.save(product);
-    return new ProductResponse(product.getProductId(), product.getName(), product.getPrice(), product.getSellerId(), product.getStartTime(), product.getFinishTime(), product.getMinBet());
+    return new ProductResponse(product.getProductId(), product.getName(), product.getPrice(), product.getSeller().getSellerId(), product.getStartTime(), product.getFinishTime(), product.getMinBet());
   }
 
   @Transactional
   public Long getSellerByProduct(Long id) {
     Product product = productRepository.findById(id).orElseThrow();
-    return product.getSellerId();
+    return product.getSeller().getSellerId();
   }
 
 

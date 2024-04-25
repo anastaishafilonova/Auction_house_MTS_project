@@ -26,11 +26,11 @@ public class Request {
     }
   }
 
-  public static class RequestToGetBalance{
+  public static class RequestToGetBalanceCustomer{
     @NotNull(message = "Customer`s id can't be null")
     private Long id;
 
-    public RequestToGetBalance(Long id) {
+    public RequestToGetBalanceCustomer(Long id) {
       this.id = id;
     }
 

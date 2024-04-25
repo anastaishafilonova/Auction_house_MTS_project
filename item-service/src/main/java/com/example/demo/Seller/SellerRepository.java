@@ -1,7 +1,5 @@
 package com.example.demo.Seller;
 
-import com.example.demo.Customer.Customer;
-import com.example.demo.Product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
