@@ -3,12 +3,15 @@ package com.example.demo.Seller;
 import com.example.demo.Product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "seller")
 public class Seller {
+  private static final Logger logger = LoggerFactory.getLogger(Seller.class);
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long sellerId;
@@ -20,13 +23,12 @@ public class Seller {
   @NotNull(message = "last_name can not be null")
   private String lastName;
   @Column(name = "balance")
-  private int balance;
+  private int balance = 0;
 
   @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private ArrayList<Product> products;
 
-  public Seller(Long sellerId, String firstName, String lastName) {
-    this.sellerId = sellerId;
+  public Seller(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
   }
@@ -69,5 +71,18 @@ public class Seller {
 
   public void setProducts(ArrayList<Product> products) {
     this.products = products;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Seller)) return false;
+    Seller seller = (Seller) o;
+    return sellerId != null && sellerId.equals(seller.sellerId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Seller.class.hashCode();
   }
 }

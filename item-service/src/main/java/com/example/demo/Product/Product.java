@@ -4,11 +4,14 @@ import com.example.demo.Customer.Customer;
 import com.example.demo.Seller.Seller;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "product")
 public class Product {
+  private static final Logger logger = LoggerFactory.getLogger(Product.class);
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long productId;
@@ -39,8 +42,7 @@ public class Product {
   @NotNull(message = "minBet can not be null")
   private int minBet;
 
-  public Product(Long productId, String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
-    this.productId = productId;
+  public Product(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
     this.name = name;
     this.price = price;
     this.sellerId = sellerId;
@@ -120,5 +122,18 @@ public class Product {
 
   public void setMinBet(int minBet) {
     this.minBet = minBet;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Product)) return false;
+    Product product = (Product) o;
+    return productId != null && productId.equals(product.productId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Product.class.hashCode();
   }
 }

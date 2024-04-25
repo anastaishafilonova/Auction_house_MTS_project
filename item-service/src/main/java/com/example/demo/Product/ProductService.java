@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -24,25 +25,43 @@ public class ProductService {
   }
 
 
-  protected ProductService() {}
-  @Transactional
-  public ProductResponse createProduct(String name, int price, Seller seller, LocalDateTime startTime, LocalDateTime finishTime, int minBet){
-    return null;
-  }
-
-  //  @Transactional
-  // public void updateProduct(Long id, String name, int price, Seller seller, LocalDateTime startTime, LocalDateTime finishTime, int minBet){}
-  @Transactional
-  public void deleteProduct(Long id){
+  protected ProductService() {
   }
 
   @Transactional
-  public int getProductPrice(Long id){
-    return 0;
+  public Product createProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
+    if (productRepository.findByName(name) != null) {
+      return productRepository.findByName(name);
+    } else {
+      Product product = new Product(name, price, sellerId, startTime, finishTime, minBet);
+      return productRepository.save(product);
+    }
   }
 
   @Transactional
-  public void changeCurrentPrice(Long id, int delta){
+  public void deleteProduct(Long id) {
+    Product product = productRepository.findById(id).orElseThrow();
+    productRepository.delete(product);
+  }
+
+  @Transactional
+  public int getProductPrice(Long id) {
+    Product product = productRepository.findById(id).orElseThrow();
+    return product.getPrice();
+  }
+
+  @Transactional
+  public ProductResponse changeCurrentPrice(Long id, int newPrice) {
+    Product product = productRepository.findById(id).orElseThrow();
+    product.setPrice(newPrice);
+    productRepository.save(product);
+    return new ProductResponse(product.getProductId(), product.getName(), product.getPrice(), product.getSellerId(), product.getStartTime(), product.getFinishTime(), product.getMinBet());
+  }
+
+  @Transactional
+  public Long getSellerByProduct(Long id) {
+    Product product = productRepository.findById(id).orElseThrow();
+    return product.getSellerId();
   }
 
 
