@@ -38,7 +38,7 @@ public class ProductService {
     if (productRepository.findByName(name) != null) {
       return productRepository.findByName(name);
     } else {
-      Seller seller = sellerRepository.findById(sellerId).orElseThrow();;
+      Seller seller = sellerRepository.findById(sellerId).orElseThrow();
       Product product = new Product(name, price, seller, startTime, finishTime, minBet);
       return productRepository.save(product);
     }
