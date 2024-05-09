@@ -33,7 +33,7 @@ public class PaymentService {
   }
 
   @Transactional
-  public void withdrawMoney(Long userId, int money) {
+  public void withdrawMoney(Long userId, int money) throws UserNotFoundException, NotEnoughMoneyException{
     try {
       Purchase purchase = purchaseRepository.findById(userId).orElseThrow();
       if (purchase.getMoney() >= money) {
