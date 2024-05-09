@@ -28,7 +28,10 @@ public class PaymentConsumer {
     PaymentConsumeMessage parsedMessage = objectMapper.readValue(message, PaymentConsumeMessage.class);
     LOGGER.info("Retrieved message {}", message);
     messageProcessor.process(
-        parsedMessage.userId(), parsedMessage.productId(), parsedMessage.price());
+        parsedMessage.customerId(),
+        parsedMessage.sellerId(),
+        parsedMessage.productId(),
+        parsedMessage.price());
     acknowledgment.acknowledge();
   }
 }
