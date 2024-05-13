@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -27,10 +28,12 @@ public class Customer {
   private int balance = 0;
 
   @OneToMany(mappedBy = "customer", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-  private ArrayList<Product> products;
+  private List<Product> products = new ArrayList<>();
 
   @Column(name = "bet")
   private int bet = 0;
+
+  protected Customer(){}
 
   public Customer(String firstName, String lastName) {
     this.firstName = firstName;
@@ -69,7 +72,7 @@ public class Customer {
     this.balance = balance;
   }
 
-  public ArrayList<Product> getProducts() {
+  public List<Product> getProducts() {
     return products;
   }
 
