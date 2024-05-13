@@ -18,7 +18,7 @@ public class ProductController {
 
 
   @PostMapping("")
-  public Product createProduct(@RequestBody Request.RequestToCreateProduct request) {
+  public ProductResponse createProduct(@RequestBody Request.RequestToCreateProduct request) {
     return productService.createProduct(request.getName(), request.getPrice(), request.getSellerId(), request.getStartTime(), request.getFinishTime(), request.getMinBet());
   }
 

@@ -34,13 +34,16 @@ public class ProductService {
   }
 
   @Transactional
-  public Product createProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
+  public ProductResponse createProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
     if (productRepository.findByName(name) != null) {
-      return productRepository.findByName(name);
+      Product product = productRepository.findByName(name);
+      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet);
     } else {
       Seller seller = sellerRepository.findById(sellerId).orElseThrow();
-      Product product = new Product(name, price, seller, startTime, finishTime, minBet);
-      return productRepository.save(product);
+      seller.addProduct(name, price, startTime, finishTime, minBet);
+      sellerRepository.save(seller);
+      Product product = productRepository.findByName(name);
+      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet);
     }
   }
 
