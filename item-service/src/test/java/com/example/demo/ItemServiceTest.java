@@ -67,15 +67,15 @@ public class ItemServiceTest extends DatabaseSuite {
 
   @Test
   public void decreaseBalanceTest() {
-    Customer customer = customerService.createCustomer("Степан", "Иванов");
+    Customer customer = customerService.createCustomer("Joost", "Klein");
     customerService.increaseBalance(customer.getCustomerId(), 200);
     customerService.decreaseBalance(customer.getCustomerId(), 100);
-    assertEquals(customerRepository.findByFirstNameAndLastName("Степан", "Иванов").getBalance(), 100);
+    assertEquals(customerRepository.findByFirstNameAndLastName("Joost", "Klein").getBalance(), 100);
   }
 
   @Test
   public void getBalanceCustomerTest() {
-    Customer customer = customerService.createCustomer("Степан", "Иванов");
+    Customer customer = customerService.createCustomer("Marko", "Veisson");
     customerService.increaseBalance(customer.getCustomerId(), 200);
     int balance = customerService.getBalanceCustomer(customer.getCustomerId());
     assertEquals(balance, 200);
@@ -95,16 +95,16 @@ public class ItemServiceTest extends DatabaseSuite {
 
   @Test
   public void deleteProductTest() {
-    Seller seller = sellerService.createSeller("Степан", "Иванов");
-    ProductResponse product = productService.createProduct("Игрушка", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
+    Seller seller = sellerService.createSeller("Kristjan", "Jakobson");
+    ProductResponse product = productService.createProduct("Чипсы", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
     productService.deleteProduct(product.productId());
-    assertEquals(customerRepository.findById(product.productId()), Optional.empty());
+    assertEquals(productRepository.findById(product.productId()), Optional.empty());
   }
 
   @Test
   public void getProductPriceTest() {
-    Seller seller = sellerService.createSeller("Степан", "Иванов");
-    ProductResponse product = productService.createProduct("Игрушка", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
+    Seller seller = sellerService.createSeller("Ramo", "Teder");
+    ProductResponse product = productService.createProduct("Talharpa", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
     int price = productService.getProductPrice(product.productId());
     assertEquals(price, 100);
   }
