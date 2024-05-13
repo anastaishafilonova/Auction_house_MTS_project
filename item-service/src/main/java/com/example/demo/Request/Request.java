@@ -43,9 +43,9 @@ public class Request {
     @NotNull(message = "Customer`s id can't be null")
     private Long id;
 
-    private int delta;
+    private Integer delta;
 
-    public RequestToIncreaseBalance(Long id, int delta) {
+    public RequestToIncreaseBalance(Long id, Integer delta) {
       this.id = id;
       this.delta = delta;
     }
@@ -54,7 +54,7 @@ public class Request {
       return id;
     }
 
-    public int getDelta() {
+    public Integer getDelta() {
       return delta;
     }
   }

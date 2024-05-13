@@ -1,0 +1,1 @@
+alter table purchase drop column type_of_user;

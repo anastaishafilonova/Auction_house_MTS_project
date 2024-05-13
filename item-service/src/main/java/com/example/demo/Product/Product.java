@@ -53,6 +53,8 @@ public class Product {
     this.seller = seller;
   }
 
+  protected Product() {}
+
   public Long getProductId() {
     return productId;
   }
@@ -137,4 +139,5 @@ public class Product {
   public int hashCode() {
     return Product.class.hashCode();
   }
+
 }

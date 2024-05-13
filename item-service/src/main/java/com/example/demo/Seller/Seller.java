@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "seller")
@@ -26,12 +28,14 @@ public class Seller {
   private int balance = 0;
 
   @OneToMany(mappedBy = "seller", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-  private ArrayList<Product> products;
+  private List<Product> products = new ArrayList<>();
 
   public Seller(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
   }
+
+  protected Seller() {}
 
   public Long getSellerId() {
     return sellerId;
@@ -65,12 +69,8 @@ public class Seller {
     this.balance = balance;
   }
 
-  public ArrayList<Product> getProducts() {
+  public List<Product> getProducts() {
     return products;
-  }
-
-  public void setProducts(ArrayList<Product> products) {
-    this.products = products;
   }
 
   @Override
@@ -84,5 +84,9 @@ public class Seller {
   @Override
   public int hashCode() {
     return Seller.class.hashCode();
+  }
+
+  public void addProduct(String name, int price, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
+    this.products.add(new Product(name, price, this, startTime, finishTime, minBet));
   }
 }
