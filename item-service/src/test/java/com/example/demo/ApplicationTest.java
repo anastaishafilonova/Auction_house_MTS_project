@@ -39,6 +39,7 @@ public class ApplicationTest {
   @Autowired private ProductService productService;
   @Autowired private SellerService sellerService;
 
+
   private Customer customer;
   private Seller seller;
   private ProductResponse product;
