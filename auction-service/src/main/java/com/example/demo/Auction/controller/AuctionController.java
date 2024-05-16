@@ -1,5 +1,7 @@
 package com.example.demo.Auction.controller;
 
+
+import com.example.demo.Auction.dto.ProductCreateResponse;
 import com.example.demo.Auction.repository.AuctionRepository;
 import com.example.demo.Auction.dto.ProductRequestToCreate;
 import com.example.demo.Auction.dto.ProductRequestToUpdate;
@@ -21,9 +23,9 @@ public class AuctionController {
     }
 
     @PostMapping("/create")
-    public Boolean createProduct(@NotNull @RequestBody @Valid ProductRequestToCreate request) {
+    public ProductCreateResponse createProduct(@NotNull @RequestBody @Valid ProductRequestToCreate request) {
         AuctionService.createAuction(request);
-        return true;
+        return new ProductCreateResponse(true);
     }
 
     @DeleteMapping("/delete/{id}")

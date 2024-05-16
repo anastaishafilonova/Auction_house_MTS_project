@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 public class ProductService {
   private ProductRepository productRepository;
   private SellerRepository sellerRepository;
-  private final RestTemplate restTemplate = new RestTemplateBuilder().rootUri("http://localhost:8081").build();
 
   @Autowired
   public ProductService(ProductRepository productRepository, SellerRepository sellerRepository) {
@@ -50,12 +49,7 @@ public class ProductService {
       sellerRepository.save(seller);
       product = productRepository.findByName(request.getName());
     }
-    ProductRequestToCreate productRequestToCreate = new ProductRequestToCreate(productRepository.findByName(request.getName()).getProductId(), request.getStartTime(), request.getFinishTime(), request.getMinBet(), request.getPrice(), request.getSellerId(), -1);
-    ResponseEntity<Boolean> createAuction = restTemplate.postForEntity(
-            "/api/auction/create",
-            productRequestToCreate,
-            Boolean.class,
-            (Object) null);
+    ProductCreateGateway.createProduct(productRepository.findByName(request.getName()).getProductId(), request);
     return new ProductResponse(product.getProductId(), request.getName(), request.getPrice(), request.getSellerId(), request.getStartTime(), request.getFinishTime(), request.getMinBet());
   }
 
