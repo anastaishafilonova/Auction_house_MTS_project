@@ -6,9 +6,10 @@ import com.example.demo.Auction.entity.Auction;
 import com.example.demo.Auction.repository.AuctionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+
+@Service
 public class AuctionService {
     private static AuctionRepository auctionRepository;
 
