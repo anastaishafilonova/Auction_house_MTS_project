@@ -4,14 +4,19 @@ import com.example.demo.Customer.Controller.CustomerResponse;
 import com.example.demo.Customer.CustomerRepository;
 import com.example.demo.Customer.CustomerService;
 import com.example.demo.Product.Controller.ProductResponse;
+import com.example.demo.Request.ProductRequestToCreate;
+import com.example.demo.Request.Request;
 import com.example.demo.Seller.Seller;
 import com.example.demo.Seller.SellerRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +24,7 @@ import java.time.LocalDateTime;
 public class ProductService {
   private ProductRepository productRepository;
   private SellerRepository sellerRepository;
+  private final RestTemplate restTemplate = new RestTemplateBuilder().rootUri("http://localhost:8081").build();
 
   @Autowired
   public ProductService(ProductRepository productRepository, SellerRepository sellerRepository) {
@@ -34,17 +40,23 @@ public class ProductService {
   }
 
   @Transactional
-  public ProductResponse createProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
-    if (productRepository.findByName(name) != null) {
-      Product product = productRepository.findByName(name);
-      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet);
+  public ProductResponse createProduct(Request.RequestToCreateProduct request) {
+    Product product;
+    if (productRepository.findByName(request.getName()) != null) {
+      product = productRepository.findByName(request.getName());
     } else {
-      Seller seller = sellerRepository.findById(sellerId).orElseThrow();
-      seller.addProduct(name, price, startTime, finishTime, minBet);
+      Seller seller = sellerRepository.findById(request.getSellerId()).orElseThrow();
+      seller.addProduct(request.getName(), request.getPrice(), request.getStartTime(), request.getFinishTime(), request.getMinBet());
       sellerRepository.save(seller);
-      Product product = productRepository.findByName(name);
-      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet);
+      product = productRepository.findByName(request.getName());
     }
+    ProductRequestToCreate productRequestToCreate = new ProductRequestToCreate(productRepository.findByName(request.getName()).getProductId(), request.getStartTime(), request.getFinishTime(), request.getMinBet(), request.getPrice(), request.getSellerId(), -1);
+    ResponseEntity<Boolean> createAuction = restTemplate.postForEntity(
+            "/api/auction/create",
+            productRequestToCreate,
+            Boolean.class,
+            (Object) null);
+    return new ProductResponse(product.getProductId(), request.getName(), request.getPrice(), request.getSellerId(), request.getStartTime(), request.getFinishTime(), request.getMinBet());
   }
 
   @Transactional
@@ -72,6 +84,4 @@ public class ProductService {
     Product product = productRepository.findById(id).orElseThrow();
     return product.getSeller().getSellerId();
   }
-
-
 }
