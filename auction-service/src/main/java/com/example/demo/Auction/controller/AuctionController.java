@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auction")
 @Validated
 public class AuctionController {
     private final AuctionRepository auctionRepository;
@@ -20,13 +20,13 @@ public class AuctionController {
         this.auctionRepository = auctionRepository;
     }
 
-    @PostMapping("/create/auction")
+    @PostMapping("/create")
     public Boolean createProduct(@NotNull @RequestBody @Valid ProductRequestToCreate request) {
         AuctionService.createAuction(request);
         return true;
     }
 
-    @DeleteMapping("/delete/auction/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteProduct(@NotNull @PathVariable Long id) {
         AuctionService.deleteProduct(id);
     }
