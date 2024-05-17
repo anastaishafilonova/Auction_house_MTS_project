@@ -60,6 +60,21 @@ public class PaymentControllerTest extends DatabaseSuite {
             response()
                 .withStatusCode(200)
                 );
+    new MockServerClient("localhost", 8081)
+        .when(
+            request()
+                .withMethod("POST")
+                .withPath("/api/money/put/1/1000")
+                .withHeaders(new Header("Accept", "application/json, application/*+json"),
+                    new Header("User-Agent", "Java/17.0.11"),
+                    new Header("Host", "localhost:8081"),
+                    new Header("Connection", "keep-alive"),
+                    new Header("Content-type", "application/x-www-form-urlencoded"),
+                    new Header("Content-length", "0")))
+        .respond(
+            response()
+                .withStatusCode(200)
+        );
 
     ResponseEntity<Void> putMoneyWithAuthResponse;
     putMoneyWithAuthResponse = rest.exchange("/api/auth/put/{userId}/{money}", HttpMethod.POST, new HttpEntity<>(headers), void.class, Map.of("userId", "1", "money", "1000"));

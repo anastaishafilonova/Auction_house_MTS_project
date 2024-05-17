@@ -76,6 +76,33 @@ public class ItemControllerTest extends DatabaseSuite {
                     "finishTime": "2023-07-15T12:30:00",
                     "minBet": "50"
                     }"""));
+    new MockServerClient("localhost", 5438)
+        .when(
+            request()
+                .withMethod("POST")
+                .withPath("/api/product")
+                .withHeaders(new Header("Accept", "application/json, application/*+json"),
+                    new Header("Content-Type", "application/json"),
+                    new Header("User-Agent", "Java/17.0.11"),
+                    new Header("Host", "localhost:5438"),
+                    new Header("Connection", "keep-alive"),
+                    new Header("content-length", "115"))
+                .withBody("{\"name\":\"second\",\"price\":100,\"sellerId\":3,\"startTime\":[2023,7,15,12,30],\"finishTime\":[2023,7,15,12,30],\"minBet\":50}"))
+        .respond(
+            response()
+                .withStatusCode(200)
+                .withHeaders(
+                    new Header("Content-Type", "application/json"))
+                .withBody("""
+                    {
+                    "productId": 1,
+                    "name": "second",
+                    "price": "100",
+                    "sellerId": "3",
+                    "startTime": "2023-07-15T12:30:00",
+                    "finishTime": "2023-07-15T12:30:00",
+                    "minBet": "50"
+                    }"""));
 
     ResponseEntity<Void> createProductWithAuthResponse;
     createProductWithAuthResponse = rest.exchange("/api/auth/product", HttpMethod.POST, new HttpEntity<>(new Request.RequestToCreateProduct("second", 100, 3L, LocalDateTime.of(2023, Month.JULY, 15, 12, 30), LocalDateTime.of(2023, Month.JULY, 15, 12, 30), 50), headers), void.class);
