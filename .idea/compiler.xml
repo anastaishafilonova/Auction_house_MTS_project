@@ -7,13 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="item-service" />
-        <module name="auth" />
         <module name="payment" />
+        <module name="auth" />
+        <module name="demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="book-service" target="17" />
-      <module name="demo" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
