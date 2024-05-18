@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import service.auth.item.Request;
 
 @RestController
 @RequestMapping("/api")
@@ -31,7 +32,7 @@ public class UserController {
 
   @PostMapping("/register")
   @Transactional
-  public void register(@RequestBody UserRegisterRequest request) {
+  public UserResponse register(@RequestBody UserRegisterRequest request) {
     LOGGER.info("username: " + request.username() + " roles: " + request.roles());
     Set<Role> roles = new HashSet<>();
     for (String role : request.roles().split(", ")) {
@@ -46,6 +47,20 @@ public class UserController {
             roles
         )
     );
+    for (Role role: roles) {
+      if (role == Role.CUSTOMER) {
+        CustomerResponse customer = restTemplate.postForEntity("http://localhost:5438/api/customer",
+            new Request.RequestToCreateCustomer(request.firstName(), request.lastName()),
+            CustomerResponse.class).getBody();
+        return new UserResponse(customer.customerId(), "CUSTOMER");
+      } else if (role == Role.SELLER) {
+        SellerResponse seller = restTemplate.postForEntity("http://localhost:5438/api/seller",
+            new Request.RequestToCreateSeller(request.firstName(), request.lastName()),
+            SellerResponse.class).getBody();
+        return new UserResponse(seller.sellerId(), "SELLER");
+      }
+    }
+    return new UserResponse(0L, "1");
   }
 }
 

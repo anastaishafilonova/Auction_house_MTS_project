@@ -85,7 +85,7 @@ public class ApplicationTest extends DatabaseSuite {
     Seller createSellerBody = createSeller.getBody();
 
     ResponseEntity<ProductResponse> createProduct;
-    createProduct = rest.postForEntity("/api/product", new Request.RequestToCreateProduct("Talharpa", 100, createSellerBody.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150), ProductResponse.class);
+    createProduct = rest.postForEntity("/api/product", new Request.RequestToCreateProduct("Talharpa", 100, createSellerBody.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150, ""), ProductResponse.class);
 
     assertTrue(createProduct.getStatusCode().is2xxSuccessful(), "Unexpected status code: " + createProduct.getStatusCode());
     ProductResponse createProductResponseBody = createProduct.getBody();
@@ -98,24 +98,24 @@ public class ApplicationTest extends DatabaseSuite {
   }
   @Test
   void shouldDeleteCustomer() {
-    Customer customerSecond = customerService.createCustomer("Кирилл", "Петров");
+    CustomerResponse customerSecond = customerService.createCustomer("Кирилл", "Петров");
     ResponseEntity<Void> deleteCustomer;
-    deleteCustomer = rest.exchange("/api/customer/{id}", HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, Map.of("id", customerSecond.getCustomerId()));
+    deleteCustomer = rest.exchange("/api/customer/{id}", HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, Map.of("id", customerSecond.customerId()));
     assertTrue(deleteCustomer.getStatusCode().is2xxSuccessful(), "Unnexpected status code: " + deleteCustomer.getStatusCode());
   }
 
   @Test
   void shouldDeleteSeller() {
-    Seller sellerSecond = sellerService.createSeller("Кирилл", "Иванов");
+    SellerResponse sellerSecond = sellerService.createSeller("Кирилл", "Иванов");
     ResponseEntity<Void> deleteSeller;
-    deleteSeller = rest.exchange("/api/seller/{id}", HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, Map.of("id", sellerSecond.getSellerId()));
+    deleteSeller = rest.exchange("/api/seller/{id}", HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, Map.of("id", sellerSecond.sellerId()));
     assertTrue(deleteSeller.getStatusCode().is2xxSuccessful(), "Unnexpected status code: " + deleteSeller.getStatusCode());
   }
 
   @Test
   void shouldDeleteProduct() {
-    Seller sellerSecond = sellerService.createSeller("Кирилл", "Игнатьев");
-    ProductResponse productSecond = productService.createProduct("Игрушка", 100, sellerSecond.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
+    SellerResponse sellerSecond = sellerService.createSeller("Кирилл", "Игнатьев");
+    ProductResponse productSecond = productService.createProduct("Игрушка", 100, sellerSecond.sellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150, "");
     ResponseEntity<Void> deleteProduct;
     deleteProduct = rest.exchange("/api/product/{id}", HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, Map.of("id", productSecond.productId()));
     assertTrue(deleteProduct.getStatusCode().is2xxSuccessful(), "Unnexpected status code: " + deleteProduct.getStatusCode());

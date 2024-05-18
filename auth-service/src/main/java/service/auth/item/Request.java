@@ -90,13 +90,16 @@ public class Request {
     @NotNull(message = "Product`s price can`t be null")
     private int minBet;
 
-    public RequestToCreateProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
+    private String urlPicture;
+
+    public RequestToCreateProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet, String urlPicture) {
       this.name = name;
       this.price = price;
       this.sellerId = sellerId;
       this.startTime = startTime;
       this.finishTime = finishTime;
       this.minBet = minBet;
+      this.urlPicture = urlPicture;
     }
 
     public String getName() {
@@ -121,6 +124,10 @@ public class Request {
 
     public int getMinBet() {
       return minBet;
+    }
+
+    public String getUrlPicture() {
+      return urlPicture;
     }
   }
 

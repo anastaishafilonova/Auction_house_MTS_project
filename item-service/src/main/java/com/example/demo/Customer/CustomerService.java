@@ -20,12 +20,14 @@ public class CustomerService {
   }
 
   @Transactional
-  public Customer createCustomer(String firstName, String lastName){
+  public CustomerResponse createCustomer(String firstName, String lastName){
     if (customerRepository.findByFirstNameAndLastName(firstName, lastName) != null) {
-      return customerRepository.findByFirstNameAndLastName(firstName, lastName);
+      Customer customer = customerRepository.findByFirstNameAndLastName(firstName, lastName);
+      return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
     } else {
       Customer customer = new Customer(firstName, lastName);
-      return customerRepository.save(customer);
+      customerRepository.save(customer);
+      return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
     }
   }
 
