@@ -11,6 +11,7 @@
     <modules>
         <module>item-service</module>
         <module>payment-service</module>
+        <module>auth-service</module>
     </modules>
 
 </project>
