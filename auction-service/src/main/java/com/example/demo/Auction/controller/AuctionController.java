@@ -1,5 +1,7 @@
 package com.example.demo.Auction.controller;
 
+
+import com.example.demo.Auction.dto.ProductCreateResponse;
 import com.example.demo.Auction.repository.AuctionRepository;
 import com.example.demo.Auction.dto.ProductRequestToCreate;
 import com.example.demo.Auction.dto.ProductRequestToUpdate;
@@ -11,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auction")
 @Validated
 public class AuctionController {
     private final AuctionRepository auctionRepository;
@@ -20,13 +22,13 @@ public class AuctionController {
         this.auctionRepository = auctionRepository;
     }
 
-    @PostMapping("/create/auction")
-    public Boolean createProduct(@NotNull @RequestBody @Valid ProductRequestToCreate request) {
+    @PostMapping("/create")
+    public ProductCreateResponse createProduct(@NotNull @RequestBody @Valid ProductRequestToCreate request) {
         AuctionService.createAuction(request);
-        return true;
+        return new ProductCreateResponse(true);
     }
 
-    @DeleteMapping("/delete/auction/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteProduct(@NotNull @PathVariable Long id) {
         AuctionService.deleteProduct(id);
     }

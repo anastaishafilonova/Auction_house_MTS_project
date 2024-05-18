@@ -22,25 +22,16 @@ import java.util.Optional;
 @RequestMapping("/api/product")
 public class ProductController {
   private ProductService productService;
-  private ProductRepository productRepository;
-  private final RestTemplate restTemplate = new RestTemplateBuilder().rootUri("http://localhost:8081").build();
+
   @Autowired
-  public ProductController(ProductService productService, ProductRepository productRepository) {
+  public ProductController(ProductService productService) {
     this.productService = productService;
-    this.productRepository = productRepository;
   }
 
 
   @PostMapping("")
   public ProductResponse createProduct(@NotNull @RequestBody @Valid Request.RequestToCreateProduct request) {
-    ProductResponse productResponse = productService.createProduct(request.getName(), request.getPrice(), request.getSellerId(), request.getStartTime(), request.getFinishTime(), request.getMinBet());
-    ProductRequestToCreate productRequestToCreate = new ProductRequestToCreate(productRepository.findByName(request.getName()).getProductId(), request.getStartTime(), request.getFinishTime(), request.getMinBet(), request.getPrice(), request.getSellerId(), -1);
-    ResponseEntity<Boolean> createAuction = restTemplate.postForEntity(
-            "/api/create/auction",
-            productRequestToCreate,
-            Boolean.class,
-            (Object) null);
-    return productResponse;
+    return productService.createProduct(request);
   }
 
   @DeleteMapping("/{id}")

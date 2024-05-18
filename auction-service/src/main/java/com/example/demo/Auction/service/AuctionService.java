@@ -6,9 +6,10 @@ import com.example.demo.Auction.entity.Auction;
 import com.example.demo.Auction.repository.AuctionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+
+@Service
 public class AuctionService {
     private static AuctionRepository auctionRepository;
 
@@ -33,5 +34,11 @@ public class AuctionService {
         Auction auction = auctionRepository.findById(id).orElseThrow();
         if (request.bet() >= auction.getMinbet()) return auctionRepository.save(new Auction(auction.getProductid(), auction.getStatus(), auction.getStarttime(), auction.getEndtime(), auction.getMinbet(), auction.getCurprice() + request.bet(), request.customerid(), auction.getSellerid()));
         else return auction;
+    }
+
+    @Transactional
+    public static int getCurPrice(long id) {
+        Auction auction = auctionRepository.findById(id).orElseThrow();
+        return auction.getCurprice();
     }
 }
