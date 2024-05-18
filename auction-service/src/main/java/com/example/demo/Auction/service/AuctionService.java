@@ -35,4 +35,10 @@ public class AuctionService {
         if (request.bet() >= auction.getMinbet()) return auctionRepository.save(new Auction(auction.getProductid(), auction.getStatus(), auction.getStarttime(), auction.getEndtime(), auction.getMinbet(), auction.getCurprice() + request.bet(), request.customerid(), auction.getSellerid()));
         else return auction;
     }
+
+    @Transactional
+    public static int getCurPrice(long id) {
+        Auction auction = auctionRepository.findById(id).orElseThrow();
+        return auction.getCurprice();
+    }
 }
