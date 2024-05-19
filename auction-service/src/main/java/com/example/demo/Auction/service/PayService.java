@@ -29,9 +29,10 @@ public class PayService {
     }
 
     public void payProduct(Long customerId, Long sellerId, Long productId, int price) throws JsonProcessingException {
-        LOGGER.info(productId + " " + customerId + " " + productId + " " + price);
-        String message = objectMapper.writeValueAsString(new PayMessage(productId, customerId, productId, price));
-        CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topic, message);
+        if (customerId != -1) {
+            String message = objectMapper.writeValueAsString(new PayMessage(customerId, sellerId, productId, price));
+            CompletableFuture<SendResult<String, String>> sendResult = kafkaTemplate.send(topic, message);
+        }
     }
 }
 
