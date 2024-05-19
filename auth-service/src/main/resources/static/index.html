@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mesto</title>
+  <title>Аукционный дом</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -15,10 +15,39 @@
               data-bs-target="#exampleModal" id="product"></button> -->
         </div>
         <div class="profile-right">
-            <button class="profile__add-btn" type="button" data-bs-toggle="modal"
-              data-bs-target="#enterModal" id="people"></button>
+            <button class="profile__add-btn-sign" type="button" data-bs-toggle="modal"
+                    data-bs-target="#enterModal" id="people">Регистрация</button>
+            <button class="profile__add-btn-enter" type="button" data-bs-toggle="modal"
+                    data-bs-target="#enterOldModal" id="people-old">Вход</button>
         </div>
     </header>
+    <div class="profile name-balance">
+        <div class="name">
+            <div class="name-name">
+                <p class="text-list-name first-name">Имя: </p>
+                <p class="first-name text-list-name"> &nbsp;Мария</p>
+            </div>
+            <div class="last-last">
+                <p class="text-list-name last-name">Фамилия: </p>
+                <p class="last-name text-list-name"> &nbsp;Лебедева</p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <div class="balance">
+                <p class="text-list-name last-name balances">Баланс: </p>
+                <p class="last-name text-list-name balances"> &nbsp;500</p>
+            </div>
+            <div>
+                <button class="profile__add-btn-increase-balace" type="button" data-bs-toggle="modal"
+                        data-bs-target="#increaseModal" id="people-old">Пополнить баланс</button>
+            </div>
+            <div>
+                <button class="profile__add-btn-decrease-balance" type="button" data-bs-toggle="modal"
+                        data-bs-target="#decreaseModal" id="people-old">Снять деньги</button>
+            </div>
+        </div>
+    </div>
     
     <!-- <div class="profile">
         <div class="profile-left">
@@ -160,23 +189,81 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="modal fade" id="betModal" tabindex="-1" aria-labelledby="betModalLabel" aria-hidden="true">
+    <div class="modal fade" id="enterOldModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="betModalLabel">Сделать ставку</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <label for="bet" class="form-lable text-list">Сумма ставки</label>
-              <input type="number" class="form-control mb-3" id="product-name">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Войти</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
-              <button type="submit" class="add-bet add-button text-list">Сделать ставку</button>
+                    <label for="people-login" class="form-lable text-list">Логин</label>
+                    <input type="text" class="form-control mb-3" id="people-login1"/>
+
+                    <label for="people-password" class="form-lable text-list">Пароль</label>
+                    <input type="password"class="form-control mb-3" id="people-password1"/>
+
+                    <button type="submit" class="enter-old-people add-button text-list text-reg">Войти</button>
+                </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="increaseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Пополнить счет</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <label for="people-increase" class="form-lable text-list">Сумма</label>
+                    <input type="number" class="form-control mb-3" id="people-increase"/>
+
+
+                    <button type="submit" class="increase-balance add-button text-list text-reg">Пополнить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="decreaseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Снять со счета</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <label for="people-decrease" class="form-lable text-list">Сумма</label>
+                    <input type="number" class="form-control mb-3" id="people-decrease"/>
+
+                    <button type="submit" class="decrease-balance add-button text-list text-reg">Снять</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="modal fade" id="betModal" tabindex="-1" aria-labelledby="betModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="betModalLabel">Сделать ставку</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label for="bet" class="form-lable text-list">Сумма ставки</label>
+            <input type="number" class="form-control mb-3" id="product-name">
+
+            <button type="submit" class="add-bet add-button text-list">Сделать ставку</button>
           </div>
         </div>
-      </div> -->
+      </div>
+    </div> -->
 
     
 </body>

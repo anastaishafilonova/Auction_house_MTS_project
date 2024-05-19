@@ -1,16 +1,15 @@
 package service.auth.user;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import service.auth.item.Request;
 
@@ -61,6 +60,24 @@ public class UserController {
       }
     }
     return new UserResponse(0L, "1");
+  }
+
+  @PostMapping("/enter")
+  public EnterUserResponse enterUser(@RequestBody RequestToEnterUser request) {
+    String username = request.username();
+    String password = request.password();
+    try {
+      User user = userRepository.findByUsername(username).orElseThrow();
+      LOGGER.info(user.getPassword());
+      LOGGER.info(passwordEncoder.encode(password));
+      LOGGER.info(passwordEncoder.encode(password));
+      if (passwordEncoder.matches(password, user.getPassword())) {
+        return new EnterUserResponse(user.getRoles().toArray()[0].toString());
+      }
+      return new EnterUserResponse("Пароль некорректен");
+    } catch (NoSuchElementException e) {
+      return new EnterUserResponse("Имя пользователя введено неверно");
+    }
   }
 }
 

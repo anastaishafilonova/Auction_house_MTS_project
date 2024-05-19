@@ -292,3 +292,50 @@ function update_product() {
 
  //<button class="product_delete btn-primary" type="button" data-bs-toggle="modal" 
 //data-bs-target="#secondModal" id="bet" data-product="${product[i][0]}">Сделать ставку</button>
+
+
+// авторизация (кнопка войти)
+//profile__add-btn-enter
+const enterBtn = document.querySelector('button.enter-old-people');
+enterBtn.addEventListener('click', function () {
+  let login = document.getElementById('people-login1').value
+  let password = document.getElementById('people-password1').value
+  if (login && password) {
+    document.getElementById('people-login1').value = ''
+    document.getElementById('people-password1').value = ''
+    console.log(login + " " + password)
+    fetch('/api/enter', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({username: login, password: password})
+    }).then(response => response.json())
+    .then(data => {
+        let role = data.statusRole;
+        console.log(role)
+        if (role === "Пароль некорректен" || role === "Имя пользователя введено неверно") {
+            Swal.fire({
+                  icon: 'error',
+                  title: 'Ошибка',
+                  text: 'Введены некорректные данные',
+                })
+        }
+        else if (role == "SELLER") {
+          update_seller()
+        } else {
+          update_seller()
+          update_customer()
+        }
+        enterModal.hide()
+      })} else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Ошибка',
+          text: 'Пожалуйста заполните все поля!',
+        })
+  }
+ });
+
+
+// пополнение баланса
