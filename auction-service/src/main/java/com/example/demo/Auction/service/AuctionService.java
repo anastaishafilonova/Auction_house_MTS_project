@@ -32,7 +32,7 @@ public class AuctionService {
     @Transactional
     public static Auction increaseBet(long id, ProductRequestToUpdate request) {
         Auction auction = auctionRepository.findById(id).orElseThrow();
-        if (request.bet() >= auction.getMinbet() && CheckBalanceGateway.checkBalance(request.customerid(), auction.getCurprice() + request.bet())) return auctionRepository.save(new Auction(auction.getProductid(), auction.getStatus(), auction.getStarttime(), auction.getEndtime(), auction.getMinbet(), auction.getCurprice() + request.bet(), request.customerid(), auction.getSellerid()));
+        if (request.bet() - auction.getCurprice() >= auction.getMinbet() && CheckBalanceGateway.checkBalance(request.customerid(), request.bet())) return auctionRepository.save(new Auction(auction.getProductid(), auction.getStatus(), auction.getStarttime(), auction.getEndtime(), auction.getMinbet(), request.bet(), request.customerid(), auction.getSellerid()));
         else return auction;
     }
 
