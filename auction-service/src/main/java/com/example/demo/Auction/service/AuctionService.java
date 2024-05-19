@@ -41,4 +41,10 @@ public class AuctionService {
         Auction auction = auctionRepository.findById(id).orElseThrow();
         return auction.getCurprice();
     }
+
+    @Transactional
+    public static void process(PayResult result) {
+        Auction auction = auctionRepository.findById(result.productId()).orElseThrow();
+        if (!result.resultStatus().equals("cancelled")) auction.setStatus("Аукцион закрыт");
+    }
 }

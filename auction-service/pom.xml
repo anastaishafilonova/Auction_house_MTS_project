@@ -111,6 +111,10 @@
 			<artifactId>mockserver-client-java</artifactId>
 			<version>3.10.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
