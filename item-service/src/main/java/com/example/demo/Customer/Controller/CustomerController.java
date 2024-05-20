@@ -19,7 +19,7 @@ public class CustomerController {
 
   @PostMapping("")
   public CustomerResponse createCustomer(@RequestBody Request.RequestToCreateCustomer request) {
-    return customerService.createCustomer(request.getFirstName(), request.getLastName());
+    return customerService.createCustomer(request.getCustomerId(), request.getFirstName(), request.getLastName());
   }
 
   @DeleteMapping("/{id}")
@@ -40,6 +40,11 @@ public class CustomerController {
   @GetMapping("/{id}")
   public int getBalanceCustomer(@PathVariable Long id) {
     return customerService.getBalanceCustomer(id);
+  }
+
+  @GetMapping("/user/{id}")
+  public CustomerResponse getCustomer(@PathVariable Long id) {
+    return customerService.getCustomer(id);
   }
 
 }

@@ -25,12 +25,12 @@ public class SellerService {
 
   protected SellerService() {}
   @Transactional
-  public SellerResponse createSeller(String firstName, String lastName){
+  public SellerResponse createSeller(Long sellerId, String firstName, String lastName){
     if (sellerRepository.findByFirstNameAndLastName(firstName, lastName) != null) {
       Seller seller = sellerRepository.findByFirstNameAndLastName(firstName, lastName);
       return new SellerResponse(seller.getSellerId(), seller.getFirstName(), seller.getLastName());
     } else {
-      Seller seller = new Seller(firstName, lastName);
+      Seller seller = new Seller(sellerId, firstName, lastName);
       sellerRepository.save(seller);
       return new SellerResponse(seller.getSellerId(), seller.getFirstName(), seller.getLastName());
     }
@@ -42,4 +42,9 @@ public class SellerService {
     sellerRepository.delete(seller);
   }
 
+  @Transactional
+  public SellerResponse getSeller(Long id) {
+    Seller seller = sellerRepository.findById(id).orElseThrow();
+    return new SellerResponse(seller.getSellerId(), seller.getFirstName(), seller.getLastName());
+  }
 }

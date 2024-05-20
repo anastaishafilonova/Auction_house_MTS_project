@@ -38,5 +38,12 @@ public class AuctionController {
         AuctionResponse.class,
         Map.of("id", request.productId()));
   }
+
+  @GetMapping("/current/price/{productId}")
+  public CurrentPriceInfo getCurPrice(@PathVariable Long productId) {
+    return restTemplate.getForEntity("http://localhost:8082/api/auction/current/price/{productId}",
+        CurrentPriceInfo.class,
+        Map.of("productId", productId)).getBody();
+  }
 }
 

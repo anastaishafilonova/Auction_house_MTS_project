@@ -239,6 +239,10 @@ function update_product() {
       console.log(product[i]);
       let beginTime = new Date(product[i].startTime);
       let endTime = new Date(product[i].finishTime);
+      fetch(`/api/auth/current/price/${product[i].productId}`, {method: 'GET', headers: {}}).then(res => res.json())
+      .then(data => {
+      const curPrice = data.curPrice;
+      console.log(data);
       tbody.insertAdjacentHTML('beforeend',
         `
               <article class="cards-block__card">
@@ -259,7 +263,7 @@ function update_product() {
                       <h2 class="cards-block__title">Минимальная ставка: ${product[i].minBet}</h2>
                   </div>
                   <div class="cards-block__txt">
-                      <h2 class="cards-block__title">Текущая ставка: </h2>
+                      <h2 class="cards-block__title">Текущая ставка: ${curPrice}</h2>
                   </div>
                   <button class="saw product_delete btn-primary" type="button" data-bs-toggle="modal"
                     data-bs-target="#secondModal" id="bet" data-product="${product[i].productId}">Сделать ставку</button>
@@ -285,6 +289,7 @@ function update_product() {
             </div>
               `
       )
+      })
     }
     if(product.length){
       var secondModal = new bootstrap.Modal(document.getElementById('secondModal'), {
@@ -340,7 +345,7 @@ enterBtn.addEventListener('click', function () {
     }).then(response => response.json())
     .then(data => {
         let role = data.statusRole;
-        console.log(role)
+        console.log(data)
         if (role === "Пароль некорректен" || role === "Имя пользователя введено неверно") {
             Swal.fire({
                   icon: 'error',
@@ -348,7 +353,9 @@ enterBtn.addEventListener('click', function () {
                   text: 'Введены некорректные данные',
                 })
         } else {
-            fetch(`/api/auth/check/balance/${data.userId}` {
+            const profile = document.querySelector('.profile');
+            profile.style.display = "flex";
+            fetch(`/api/auth/check/balance/${data.userId}`, {
                     method: 'GET',
                     headers: {
                         'Content-type': 'application/json'
@@ -356,30 +363,23 @@ enterBtn.addEventListener('click', function () {
                 }).then(resp => resp.json())
                 .then(result => {
                     let balance = result.balance;
+                    profile.querySelector('#balance').textContent = `${balance || 0} rub`;
                     })
-            const profile = document.querySelector('.profile');
-            profile.style.display = "flex";
-            profile.querySelector('#name').textContent = firstName;
-            profile.querySelector('#surname').textContent = lastName;
-            profile.querySelector('#balance').textContent = '0 rub';
-        }
-        else if (role == "SELLER") {
+            profile.querySelector('#name').textContent = data.firstName;
+            profile.querySelector('#surname').textContent = data.lastName;
 
+        if (role == "SELLER") {
           document.cookie = "userRole=" + role;
           document.cookie = "userId=" + data.userId;
           update_seller()
         } else {
-        const profile = document.querySelector('.profile');
-                    profile.style.display = "flex";
-                    profile.querySelector('#name').textContent = firstName;
-                    profile.querySelector('#surname').textContent = lastName;
-                    profile.querySelector('#balance').textContent = '0 rub';
           document.cookie = "userRole=" + role;
           document.cookie = "userId=" + data.userId;
           update_seller()
           update_customer()
         }
         enterModal.hide()
+        }
       })} else {
         Swal.fire({
           icon: 'error',
@@ -401,7 +401,13 @@ increaseBtn.addEventListener('click', function () {
         headers: {
             'Content-type': 'application/json'
         }
+    }).then(res => {
+        if (res.ok) {
+            const profile = document.querySelector('.profile');
+            profile.querySelector('#balance').textContent = `${Number(profile.querySelector('#balance').textContent.split(' rub')[0]) + Number(summa)} rub`;
+        }
     })
+
     } else {
         Swal.fire({
           icon: 'error',
@@ -423,6 +429,11 @@ increaseBtn.addEventListener('click', function () {
          headers: {
              'Content-type': 'application/json'
          }
+     }).then(res => {
+        if (res.ok) {
+            const profile = document.querySelector('.profile');
+            profile.querySelector('#balance').textContent = `${Number(profile.querySelector('#balance').textContent.split(' rub')[0]) - Number(summa)} rub`;
+        }
      })
      } else {
          Swal.fire({

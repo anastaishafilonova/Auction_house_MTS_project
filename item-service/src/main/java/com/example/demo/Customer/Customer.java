@@ -14,7 +14,6 @@ import java.util.List;
 public class Customer {
   private static final Logger logger = LoggerFactory.getLogger(Customer.class);
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long customerId;
 
   @Column(name = "first_name")
@@ -35,7 +34,8 @@ public class Customer {
 
   protected Customer(){}
 
-  public Customer(String firstName, String lastName) {
+  public Customer(Long customerId, String firstName, String lastName) {
+    this.customerId = customerId;
     this.firstName = firstName;
     this.lastName = lastName;
   }

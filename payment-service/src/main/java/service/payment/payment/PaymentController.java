@@ -47,7 +47,7 @@ public class PaymentController {
     try {
       return paymentService.checkBalance(userId);
     } catch (UserNotFoundException e) {
-      LOGGER.warn(e.getMessage());
+      LOGGER.warn(e.getMessage() + userId);
       throw new UserNotFoundException(e.getMessage());
     }
   }

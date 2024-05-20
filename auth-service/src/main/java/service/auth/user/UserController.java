@@ -1,12 +1,11 @@
 package service.auth.user;
 
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,7 @@ public class UserController {
     for (String role : request.roles().split(", ")) {
       roles.add(Role.valueOf(role));
     }
-    userRepository.save(
+    User user = userRepository.save(
         // Создаем здесь нашу сущность User
         new User(
             request.username(),
@@ -48,14 +47,24 @@ public class UserController {
     );
     for (Role role: roles) {
       if (role == Role.CUSTOMER) {
-        CustomerResponse customer = restTemplate.postForEntity("http://localhost:5438/api/customer",
-            new Request.RequestToCreateCustomer(request.firstName(), request.lastName()),
-            CustomerResponse.class).getBody();
+        CustomerResponse customer =
+            restTemplate
+                .postForEntity(
+                    "http://localhost:5438/api/customer",
+                    new Request.RequestToCreateCustomer(
+                        user.getId(), request.firstName(), request.lastName()),
+                    CustomerResponse.class)
+                .getBody();
         return new UserResponse(customer.customerId(), "CUSTOMER");
       } else if (role == Role.SELLER) {
-        SellerResponse seller = restTemplate.postForEntity("http://localhost:5438/api/seller",
-            new Request.RequestToCreateSeller(request.firstName(), request.lastName()),
-            SellerResponse.class).getBody();
+        SellerResponse seller =
+            restTemplate
+                .postForEntity(
+                    "http://localhost:5438/api/seller",
+                    new Request.RequestToCreateSeller(
+                        user.getId(), request.firstName(), request.lastName()),
+                    SellerResponse.class)
+                .getBody();
         return new UserResponse(seller.sellerId(), "SELLER");
       }
     }
@@ -69,11 +78,24 @@ public class UserController {
     try {
       User user = userRepository.findByUsername(username).orElseThrow();
       if (passwordEncoder.matches(password, user.getPassword())) {
-        return new EnterUserResponse(user.getRoles().toArray()[0].toString(), user.getId());
+        String role = user.getRoles().toArray()[0].toString();
+        if (Objects.equals(role, "SELLER")) {
+          SellerResponse sellerResponse = restTemplate.getForEntity("http://localhost:5438/api/seller/user/{userId}",
+              SellerResponse.class,
+              Map.of("userId", user.getId())).getBody();
+          return new EnterUserResponse(
+              role, user.getId(), sellerResponse.firstName(), sellerResponse.lastName());
+        } else if (Objects.equals(role, "CUSTOMER")) {
+          CustomerResponse customerResponse = restTemplate.getForEntity("http://localhost:5438/api/customer/user/{userId}",
+              CustomerResponse.class,
+              Map.of("userId", user.getId())).getBody();
+          return new EnterUserResponse(role, user.getId(), customerResponse.firstName(), customerResponse.lastName());
+        }
+
       }
-      return new EnterUserResponse("Пароль некорректен", 1L);
+      return new EnterUserResponse("Пароль некорректен", 1L, "", "");
     } catch (NoSuchElementException e) {
-      return new EnterUserResponse("Имя пользователя введено неверно", 1L);
+      return new EnterUserResponse("Имя пользователя введено неверно", 1L, "", "");
     }
   }
 }

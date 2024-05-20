@@ -55,9 +55,8 @@ public class PaymentController {
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/check/balance/{userId}")
   public UserBalanceInfo checkBalance(@PathVariable @NotNull Long userId) {
-    return restTemplate.postForEntity(
+    return restTemplate.getForEntity(
         "http://localhost:8081/api/money/check/balance/{userId}",
-        new HttpEntity<>(null),
         UserBalanceInfo.class,
         Map.of("userId", userId)
     ).getBody();

@@ -15,7 +15,6 @@ import java.util.List;
 public class Seller {
   private static final Logger logger = LoggerFactory.getLogger(Seller.class);
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long sellerId;
 
   @Column(name = "first_name")
@@ -30,7 +29,8 @@ public class Seller {
   @OneToMany(mappedBy = "seller", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Product> products = new ArrayList<>();
 
-  public Seller(String firstName, String lastName) {
+  public Seller(Long sellerId, String firstName, String lastName) {
+    this.sellerId = sellerId;
     this.firstName = firstName;
     this.lastName = lastName;
   }

@@ -6,13 +6,16 @@ import java.time.LocalDateTime;
 
 public class Request {
   public static class RequestToCreateCustomer {
+    @NotNull(message = "Customer`s id can`t be null")
+    private Long customerId;
     @NotNull(message = "Customer`s firstName can`t be null")
     private String firstName;
 
     @NotNull(message = "Customer`s lastName can`t be null")
     private String lastName;
 
-    public RequestToCreateCustomer(String firstName, String lastName) {
+    public RequestToCreateCustomer(Long customerId, String firstName, String lastName) {
+      this.customerId = customerId;
       this.firstName = firstName;
       this.lastName = lastName;
     }
@@ -23,6 +26,10 @@ public class Request {
 
     public String getLastName() {
       return lastName;
+    }
+
+    public Long getCustomerId() {
+      return customerId;
     }
   }
 
@@ -167,15 +174,22 @@ public class Request {
   }
 
   public static class RequestToCreateSeller {
+    @NotNull(message = "Seller`s id can`t be null")
+    private Long sellerId;
     @NotNull(message = "Seller`s firstName can`t be null")
     private String firstName;
 
     @NotNull(message = "Seller`s lastName can`t be null")
     private String lastName;
 
-    public RequestToCreateSeller(String firstName, String lastName) {
+    public RequestToCreateSeller(Long sellerId, String firstName, String lastName) {
+      this.sellerId = sellerId;
       this.firstName = firstName;
       this.lastName = lastName;
+    }
+
+    public Long getSellerId() {
+      return sellerId;
     }
 
     public String getFirstName() {

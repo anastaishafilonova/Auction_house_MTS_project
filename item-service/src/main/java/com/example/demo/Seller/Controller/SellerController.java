@@ -1,6 +1,7 @@
 package com.example.demo.Seller.Controller;
 
 
+import com.example.demo.Customer.Controller.CustomerResponse;
 import com.example.demo.Request.Request;
 import com.example.demo.Seller.Seller;
 import com.example.demo.Seller.SellerService;
@@ -21,11 +22,16 @@ public class SellerController {
 
   @PostMapping("")
   public SellerResponse createSeller(@RequestBody Request.RequestToCreateSeller request) {
-    return sellerService.createSeller(request.getFirstName(), request.getLastName());
+    return sellerService.createSeller(request.getSellerId(), request.getFirstName(), request.getLastName());
   }
 
   @DeleteMapping("/{id}")
   public void deleteSeller(@PathVariable Long id) {
     sellerService.deleteSeller(id);
+  }
+
+  @GetMapping("/user/{id}")
+  public SellerResponse getSeller(@PathVariable Long id) {
+    return sellerService.getSeller(id);
   }
 }

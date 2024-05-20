@@ -20,12 +20,12 @@ public class CustomerService {
   }
 
   @Transactional
-  public CustomerResponse createCustomer(String firstName, String lastName){
+  public CustomerResponse createCustomer(Long customerId, String firstName, String lastName){
     if (customerRepository.findByFirstNameAndLastName(firstName, lastName) != null) {
       Customer customer = customerRepository.findByFirstNameAndLastName(firstName, lastName);
       return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
     } else {
-      Customer customer = new Customer(firstName, lastName);
+      Customer customer = new Customer(customerId, firstName, lastName);
       customerRepository.save(customer);
       return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
     }
@@ -54,6 +54,11 @@ public class CustomerService {
   public CustomerResponse decreaseBalance(Long id, int delta){
     Customer customer = customerRepository.findById(id).orElseThrow();
     customer.setBalance(customer.getBalance() - delta);
+    return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
+  }
+
+  public CustomerResponse getCustomer(Long id) {
+    Customer customer = customerRepository.findById(id).orElseThrow();
     return new CustomerResponse(customer.getCustomerId(), customer.getFirstName(), customer.getLastName());
   }
 }
