@@ -46,48 +46,48 @@ public class ItemServiceTest extends DatabaseSuite {
   private SellerRepository sellerRepository;
   @Test
   public void createCustomerTest() {
-    Customer customer = customerService.createCustomer("Степан", "Иванов");
-    assertEquals(customer.getFirstName(), "Степан");
-    assertEquals(customer.getLastName(), "Иванов");
+    CustomerResponse customer = customerService.createCustomer("Степан", "Иванов");
+    assertEquals(customer.firstName(), "Степан");
+    assertEquals(customer.lastName(), "Иванов");
   }
 
   @Test
   public void deleteCustomerTest() {
-    Customer customer = customerService.createCustomer("Степан", "Иванов");
-    customerService.deleteCustomer(customer.getCustomerId());
-    assertEquals(customerRepository.findById(customer.getCustomerId()), Optional.empty());
+    CustomerResponse customer = customerService.createCustomer("Степан", "Иванов");
+    customerService.deleteCustomer(customer.customerId());
+    assertEquals(customerRepository.findById(customer.customerId()), Optional.empty());
   }
 
   @Test
   public void increaseBalanceTest() {
-    Customer customer = customerService.createCustomer("Степан", "Иванов");
-    customerService.increaseBalance(customer.getCustomerId(), 100);
+    CustomerResponse customer = customerService.createCustomer("Степан", "Иванов");
+    customerService.increaseBalance(customer.customerId(), 100);
     assertEquals(customerRepository.findByFirstNameAndLastName("Степан", "Иванов").getBalance(), 100);
   }
 
   @Test
   public void decreaseBalanceTest() {
-    Customer customer = customerService.createCustomer("Joost", "Klein");
-    customerService.increaseBalance(customer.getCustomerId(), 200);
-    customerService.decreaseBalance(customer.getCustomerId(), 100);
+    CustomerResponse customer = customerService.createCustomer("Joost", "Klein");
+    customerService.increaseBalance(customer.customerId(), 200);
+    customerService.decreaseBalance(customer.customerId(), 100);
     assertEquals(customerRepository.findByFirstNameAndLastName("Joost", "Klein").getBalance(), 100);
   }
 
   @Test
   public void getBalanceCustomerTest() {
-    Customer customer = customerService.createCustomer("Marko", "Veisson");
-    customerService.increaseBalance(customer.getCustomerId(), 200);
-    int balance = customerService.getBalanceCustomer(customer.getCustomerId());
+    CustomerResponse customer = customerService.createCustomer("Marko", "Veisson");
+    customerService.increaseBalance(customer.customerId(), 200);
+    int balance = customerService.getBalanceCustomer(customer.customerId());
     assertEquals(balance, 200);
   }
 
   @Test
   public void createProductTest() {
-    Seller seller = sellerService.createSeller("Степан", "Иванов");
-    ProductResponse product = productService.createProduct("Игрушка", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
+    SellerResponse seller = sellerService.createSeller("Степан", "Иванов");
+    ProductResponse product = productService.createProduct("Игрушка", 100, seller.sellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150, "");
     assertEquals(product.name(), "Игрушка");
     assertEquals(product.price(), 100);
-    assertEquals(product.sellerId(), seller.getSellerId());
+    assertEquals(product.sellerId(), seller.sellerId());
     assertEquals(product.startTime(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30));
     assertEquals(product.finishTime(), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30));
     assertEquals(product.minBet(), 150);
@@ -95,24 +95,24 @@ public class ItemServiceTest extends DatabaseSuite {
 
   @Test
   public void deleteProductTest() {
-    Seller seller = sellerService.createSeller("Kristjan", "Jakobson");
-    ProductResponse product = productService.createProduct("Чипсы", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
+    SellerResponse seller = sellerService.createSeller("Kristjan", "Jakobson");
+    ProductResponse product = productService.createProduct("Чипсы", 100, seller.sellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150, "");
     productService.deleteProduct(product.productId());
     assertEquals(productRepository.findById(product.productId()), Optional.empty());
   }
 
   @Test
   public void getProductPriceTest() {
-    Seller seller = sellerService.createSeller("Ramo", "Teder");
-    ProductResponse product = productService.createProduct("Talharpa", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
+    SellerResponse seller = sellerService.createSeller("Ramo", "Teder");
+    ProductResponse product = productService.createProduct("Talharpa", 100, seller.sellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150, "");
     int price = productService.getProductPrice(product.productId());
     assertEquals(price, 100);
   }
 
   @Test
   public void changeCurrentPriceTest() {
-    Seller seller = sellerService.createSeller("Степан", "Иванов");
-    ProductResponse product = productService.createProduct("Игрушка", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
+    SellerResponse seller = sellerService.createSeller("Степан", "Иванов");
+    ProductResponse product = productService.createProduct("Игрушка", 100, seller.sellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150, "");
     productService.changeCurrentPrice(product.productId(), 200);
     int price = productService.getProductPrice(product.productId());
     assertEquals(price, 200);
@@ -120,23 +120,23 @@ public class ItemServiceTest extends DatabaseSuite {
 
   @Test
   public void getSellerByProductTest() {
-    Seller seller = sellerService.createSeller("Степан", "Иванов");
-    ProductResponse product = productService.createProduct("Игрушка", 100, seller.getSellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150);
-    assertEquals(productService.getSellerByProduct(product.productId()), seller.getSellerId());
+    SellerResponse seller = sellerService.createSeller("Степан", "Иванов");
+    ProductResponse product = productService.createProduct("Игрушка", 100, seller.sellerId(), LocalDateTime.of(2024, Month.APRIL, 8, 12, 30), LocalDateTime.of(2024, Month.APRIL, 10, 12, 30), 150, "");
+    assertEquals(productService.getSellerByProduct(product.productId()), seller.sellerId());
   }
 
   @Test
   public void createSellerTest() {
-    Seller seller = sellerService.createSeller("Степан", "Иванов");
-    assertEquals(seller.getFirstName(), "Степан");
-    assertEquals(seller.getLastName(), "Иванов");
+    SellerResponse seller = sellerService.createSeller("Степан", "Иванов");
+    assertEquals(seller.firstName(), "Степан");
+    assertEquals(seller.lastName(), "Иванов");
   }
 
   @Test
   public void deleteSellerTest() {
-    Seller seller = sellerService.createSeller("Степан", "Иванов");
-    sellerService.deleteSeller(seller.getSellerId());
-    assertEquals(sellerRepository.findById(seller.getSellerId()), Optional.empty());
+    SellerResponse seller = sellerService.createSeller("Степан", "Иванов");
+    sellerService.deleteSeller(seller.sellerId());
+    assertEquals(sellerRepository.findById(seller.sellerId()), Optional.empty());
   }
 
 }

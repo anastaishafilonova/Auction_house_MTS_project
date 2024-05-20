@@ -86,7 +86,7 @@ public class Seller {
     return Seller.class.hashCode();
   }
 
-  public void addProduct(String name, int price, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
-    this.products.add(new Product(name, price, this, startTime, finishTime, minBet));
+  public void addProduct(String name, int price, LocalDateTime startTime, LocalDateTime finishTime, int minBet, String urlPicture) {
+    this.products.add(new Product(name, price, this, startTime, finishTime, minBet, urlPicture));
   }
 }

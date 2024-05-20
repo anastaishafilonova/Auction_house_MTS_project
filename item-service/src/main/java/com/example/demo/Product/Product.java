@@ -40,20 +40,33 @@ public class Product {
   @Column(name = "status")
   private boolean status;
 
-  @Column(name = "minBet")
+  @Column(name = "min_bet")
   @NotNull(message = "minBet can not be null")
   private int minBet;
 
-  public Product(String name, int price, Seller seller, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
+  @Column(name = "url_picture")
+  @NotNull(message = "urlPicture can not be null")
+  private String urlPicture;
+
+  public Product(String name, int price, Seller seller, LocalDateTime startTime, LocalDateTime finishTime, int minBet, String urlPicture) {
     this.name = name;
     this.price = price;
     this.startTime = startTime;
     this.finishTime = finishTime;
     this.minBet = minBet;
     this.seller = seller;
+    this.urlPicture = urlPicture;
   }
 
   protected Product() {}
+
+  public String getUrlPicture() {
+    return urlPicture;
+  }
+
+  public void setUrlPicture(String urlPicture) {
+    this.urlPicture = urlPicture;
+  }
 
   public Long getProductId() {
     return productId;

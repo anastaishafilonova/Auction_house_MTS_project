@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ProductService {
@@ -34,16 +36,16 @@ public class ProductService {
   }
 
   @Transactional
-  public ProductResponse createProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
+  public ProductResponse createProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet, String urlPicture) {
     if (productRepository.findByName(name) != null) {
       Product product = productRepository.findByName(name);
-      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet);
+      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet, urlPicture);
     } else {
       Seller seller = sellerRepository.findById(sellerId).orElseThrow();
-      seller.addProduct(name, price, startTime, finishTime, minBet);
+      seller.addProduct(name, price, startTime, finishTime, minBet, urlPicture);
       sellerRepository.save(seller);
       Product product = productRepository.findByName(name);
-      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet);
+      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet, urlPicture);
     }
   }
 
@@ -64,7 +66,7 @@ public class ProductService {
     Product product = productRepository.findById(id).orElseThrow();
     product.setPrice(newPrice);
     productRepository.save(product);
-    return new ProductResponse(product.getProductId(), product.getName(), product.getPrice(), product.getSeller().getSellerId(), product.getStartTime(), product.getFinishTime(), product.getMinBet());
+    return new ProductResponse(product.getProductId(), product.getName(), product.getPrice(), product.getSeller().getSellerId(), product.getStartTime(), product.getFinishTime(), product.getMinBet(), product.getUrlPicture());
   }
 
   @Transactional
@@ -73,5 +75,8 @@ public class ProductService {
     return product.getSeller().getSellerId();
   }
 
-
+  @Transactional
+  public ArrayList<Product> getAllProducts() {
+    return new ArrayList<>(productRepository.findAll());
+  }
 }

@@ -31,7 +31,7 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http.csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(NEVER))
-        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/book/welcome", "/api/register").permitAll()
+        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/register", "/api/auth/product/all").permitAll()
             .anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults())
         .build();

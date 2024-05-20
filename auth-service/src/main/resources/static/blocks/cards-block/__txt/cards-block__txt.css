@@ -1,0 +1,7 @@
+.cards-block__txt {
+    display: flex;
+    justify-content: space-around;
+    background-color: #ffffff;
+    padding-top: 25px;
+    padding-bottom: 30px;
+}

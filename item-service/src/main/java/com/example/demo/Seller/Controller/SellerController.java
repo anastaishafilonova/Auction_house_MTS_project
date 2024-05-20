@@ -20,7 +20,7 @@ public class SellerController {
   protected SellerController(){}
 
   @PostMapping("")
-  public Seller createSeller(@RequestBody Request.RequestToCreateSeller request) {
+  public SellerResponse createSeller(@RequestBody Request.RequestToCreateSeller request) {
     return sellerService.createSeller(request.getFirstName(), request.getLastName());
   }
 

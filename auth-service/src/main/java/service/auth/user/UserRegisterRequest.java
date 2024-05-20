@@ -1,5 +1,5 @@
 package service.auth.user;
 
 
-public record UserRegisterRequest(String username, String password, String roles) {
+public record UserRegisterRequest(String firstName, String lastName, String username, String password, String roles) {
 }

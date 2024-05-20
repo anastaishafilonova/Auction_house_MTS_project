@@ -25,12 +25,14 @@ public class SellerService {
 
   protected SellerService() {}
   @Transactional
-  public Seller createSeller(String firstName, String lastName){
+  public SellerResponse createSeller(String firstName, String lastName){
     if (sellerRepository.findByFirstNameAndLastName(firstName, lastName) != null) {
-      return sellerRepository.findByFirstNameAndLastName(firstName, lastName);
+      Seller seller = sellerRepository.findByFirstNameAndLastName(firstName, lastName);
+      return new SellerResponse(seller.getSellerId(), seller.getFirstName(), seller.getLastName());
     } else {
       Seller seller = new Seller(firstName, lastName);
-      return sellerRepository.save(seller);
+      sellerRepository.save(seller);
+      return new SellerResponse(seller.getSellerId(), seller.getFirstName(), seller.getLastName());
     }
   }
 

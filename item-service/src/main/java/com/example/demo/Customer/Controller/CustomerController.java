@@ -18,7 +18,7 @@ public class CustomerController {
   protected CustomerController(){}
 
   @PostMapping("")
-  public Customer createCustomer(@RequestBody Request.RequestToCreateCustomer request) {
+  public CustomerResponse createCustomer(@RequestBody Request.RequestToCreateCustomer request) {
     return customerService.createCustomer(request.getFirstName(), request.getLastName());
   }
 

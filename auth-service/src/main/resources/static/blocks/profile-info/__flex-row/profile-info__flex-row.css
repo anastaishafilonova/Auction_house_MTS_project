@@ -1,0 +1,6 @@
+.profile-info__flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    min-width: fit-content;
+}
