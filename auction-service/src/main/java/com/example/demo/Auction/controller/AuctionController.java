@@ -1,10 +1,8 @@
 package com.example.demo.Auction.controller;
 
 
-import com.example.demo.Auction.dto.ProductCreateResponse;
+import com.example.demo.Auction.dto.*;
 import com.example.demo.Auction.repository.AuctionRepository;
-import com.example.demo.Auction.dto.ProductRequestToCreate;
-import com.example.demo.Auction.dto.ProductRequestToUpdate;
 import com.example.demo.Auction.entity.Auction;
 import com.example.demo.Auction.service.AuctionService;
 import jakarta.validation.Valid;
@@ -34,8 +32,13 @@ public class AuctionController {
     }
 
     @PutMapping("/increase/bet/{id}")
-    public Auction increaseBet(@NotNull @PathVariable Long id,
-                               @NotNull @RequestBody @Valid ProductRequestToUpdate request) {
+    public AuctionResponse increaseBet(@NotNull @PathVariable Long id,
+                                       @NotNull @RequestBody @Valid ProductRequestToUpdate request) {
         return AuctionService.increaseBet(id, request);
+    }
+
+    @GetMapping("/current/price/{productId}")
+    public CurrentPriceInfo getCurPrice(@NotNull @PathVariable Long productId) {
+        return new CurrentPriceInfo(productId, AuctionService.getCurPrice(productId));
     }
 }
