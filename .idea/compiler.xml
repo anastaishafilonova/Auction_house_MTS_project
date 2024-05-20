@@ -20,7 +20,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth" options="-parameters" />
       <module name="book-service" options="-parameters" />
-      <module name="demo" options="" />
+      <module name="demo" options="-parameters" />
       <module name="item-service" options="-parameters" />
       <module name="payment" options="-parameters" />
     </option>

@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import service.auth.user.User;
 import service.auth.user.UserRepository;
 
 @RestController
@@ -49,6 +50,17 @@ public class PaymentController {
         void.class,
         Map.of("userId", userId, "money", money)
     );
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/check/balance/{userId}")
+  public UserBalanceInfo checkBalance(@PathVariable @NotNull Long userId) {
+    return restTemplate.postForEntity(
+        "http://localhost:8081/api/money/check/balance/{userId}",
+        new HttpEntity<>(null),
+        UserBalanceInfo.class,
+        Map.of("userId", userId)
+    ).getBody();
   }
 }
 

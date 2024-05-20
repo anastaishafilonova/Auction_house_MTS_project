@@ -34,6 +34,7 @@ public class ProductCreateGateway {
         try {
             ProductRequestToCreate productRequestToCreate = new ProductRequestToCreate(productId, request.getStartTime(), request.getFinishTime(), request.getMinBet(), request.getPrice(), -1, request.getSellerId());
             HttpHeaders headers = new HttpHeaders();
+
             restTemplate.exchange(
                     "/api/auction/create",
                     HttpMethod.POST,

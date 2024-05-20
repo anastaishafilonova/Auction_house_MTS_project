@@ -4,6 +4,7 @@ import com.example.demo.Customer.Controller.CustomerResponse;
 import com.example.demo.Customer.CustomerRepository;
 import com.example.demo.Customer.CustomerService;
 import com.example.demo.Product.Controller.ProductResponse;
+import com.example.demo.Request.Request;
 import com.example.demo.Seller.Seller;
 import com.example.demo.Seller.SellerRepository;
 import jakarta.transaction.Transactional;
@@ -45,6 +46,8 @@ public class ProductService {
       seller.addProduct(name, price, startTime, finishTime, minBet, urlPicture);
       sellerRepository.save(seller);
       Product product = productRepository.findByName(name);
+      ProductCreateGateway.createProduct(
+          product.getProductId(), new Request.RequestToCreateProduct(name, price, sellerId, startTime, finishTime, minBet, urlPicture));
       return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet, urlPicture);
     }
   }

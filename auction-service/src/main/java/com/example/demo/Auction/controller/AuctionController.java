@@ -1,6 +1,7 @@
 package com.example.demo.Auction.controller;
 
 
+import com.example.demo.Auction.dto.AuctionResponse;
 import com.example.demo.Auction.dto.ProductCreateResponse;
 import com.example.demo.Auction.repository.AuctionRepository;
 import com.example.demo.Auction.dto.ProductRequestToCreate;
@@ -34,8 +35,8 @@ public class AuctionController {
     }
 
     @PutMapping("/increase/bet/{id}")
-    public Auction increaseBet(@NotNull @PathVariable Long id,
-                               @NotNull @RequestBody @Valid ProductRequestToUpdate request) {
+    public AuctionResponse increaseBet(@NotNull @PathVariable Long id,
+                                       @NotNull @RequestBody @Valid ProductRequestToUpdate request) {
         return AuctionService.increaseBet(id, request);
     }
 }

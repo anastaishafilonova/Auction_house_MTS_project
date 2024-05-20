@@ -55,6 +55,11 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
         document.cookie = "userRole=" + userRole;
         document.cookie = "userId=" + userId;
     });
+    const profile = document.querySelector('.profile');
+    profile.style.display = "flex";
+    profile.querySelector('#name').textContent = firstName;
+    profile.querySelector('#surname').textContent = lastName;
+    profile.querySelector('#balance').textContent = '0 rub';
     if (role == "SELLER") {
       update_seller()
     } else {
@@ -80,7 +85,28 @@ function update_customer(){
     }
   }
   // document.getElementsByClassName("saw").style.display = "block"
-  const betBtn = document.getElementById("bet");
+  const betBtn = document.getElementById("bet");  // создать ставку
+   betBtn.addEventListener('click', function () {
+     let summa = document.getElementById("product-bet").value
+     let productId = betBtn.data-product;
+     if (summa) {
+       document.getElementById("product-bet").value = ''
+       const cookieId = (document.cookie.match('(^|; )' + encodeURIComponent('userId') + '=([^;]+)') || []).pop() || null;
+       fetch('/api/auth/create/bet', {
+           method: 'POST',
+           headers: {
+               'Content-type': 'application/json'
+           },
+           body: {productId: productId, bet: summa, customerId: cookieId}
+       })
+       } else {
+           Swal.fire({
+             icon: 'error',
+             title: 'Ошибка',
+             text: 'Пожалуйста заполните все поля!',
+           })
+       }
+    });
 }
 
 
@@ -321,12 +347,33 @@ enterBtn.addEventListener('click', function () {
                   title: 'Ошибка',
                   text: 'Введены некорректные данные',
                 })
+        } else {
+            fetch(`/api/auth/check/balance/${data.userId}` {
+                    method: 'GET',
+                    headers: {
+                        'Content-type': 'application/json'
+                    }
+                }).then(resp => resp.json())
+                .then(result => {
+                    let balance = result.balance;
+                    })
+            const profile = document.querySelector('.profile');
+            profile.style.display = "flex";
+            profile.querySelector('#name').textContent = firstName;
+            profile.querySelector('#surname').textContent = lastName;
+            profile.querySelector('#balance').textContent = '0 rub';
         }
         else if (role == "SELLER") {
+
           document.cookie = "userRole=" + role;
           document.cookie = "userId=" + data.userId;
           update_seller()
         } else {
+        const profile = document.querySelector('.profile');
+                    profile.style.display = "flex";
+                    profile.querySelector('#name').textContent = firstName;
+                    profile.querySelector('#surname').textContent = lastName;
+                    profile.querySelector('#balance').textContent = '0 rub';
           document.cookie = "userRole=" + role;
           document.cookie = "userId=" + data.userId;
           update_seller()
