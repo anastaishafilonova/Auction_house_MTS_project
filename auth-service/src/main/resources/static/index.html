@@ -9,16 +9,30 @@
 </head>
 <body class="page">
     <header class="header">
-        <div class="header__logo"></div>
-        <div class="profile-right-seller">
+        <div class="title-logo">
+            <p class="title_head">Auction</p>
+            <div class="logo_div">
+                <img class="header__logo" src="./images/logoHouse.svg">
+            </div>
+
+        </div>
+
+<!--        <div class="profile-right-seller">-->
             <!-- <button class="profile__add-btn" type="button" data-bs-toggle="modal"
               data-bs-target="#exampleModal" id="product"></button> -->
-        </div>
+<!--        </div>-->
         <div class="profile-right">
             <button class="profile__add-btn-sign" type="button" data-bs-toggle="modal"
-                    data-bs-target="#enterModal" id="people">Регистрация</button>
+                    data-bs-target="#enterModal" id="people-sign-up">Регистрация</button>
             <button class="profile__add-btn-enter" type="button" data-bs-toggle="modal"
-                    data-bs-target="#enterOldModal" id="people-old">Вход</button>
+                    data-bs-target="#enterOldModal" id="people-old-enter">Вход</button>
+            <div class="profile-right-seller">
+                <!-- <button class="profile__add-btn" type="button" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" id="product"></button> -->
+            </div>
+            <div class="profile-right-enter invisible-button">
+                <button class="profile__add-btn-log-out" type="button" id="profile-log-out"></button>
+            </div>
         </div>
     </header>
     <div class="profile name-balance" style="display:none;">
@@ -146,7 +160,7 @@
               <input type="datetime-local" class="form-control mb-3" id="localdate-start" name="date"/>
 
               <label for="localdate-finish" class="form-lable text-list">Дата и время окончания аукциона</label>
-              <input type="datetime-local"class="form-control mb-3" id="localdate-finish" name="date"/>
+              <input type="datetime-local" class="form-control mb-3" id="localdate-finish" name="date"/>
 
               <label for="product-min-bet" class="form-lable text-list">Минимальная ставка</label>
               <input type="number" class="form-control mb-3" id="product-min-bet">

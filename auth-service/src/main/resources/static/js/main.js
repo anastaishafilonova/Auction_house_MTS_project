@@ -85,42 +85,20 @@ function update_customer(){
     }
   }
   // document.getElementsByClassName("saw").style.display = "block"
-  Array.from(document.querySelectorAll("#bet")).forEach(item => item.addEventListener('click', evt => {
-  const betBtn = evt.target;
-  console.log(betBtn);
-  const curBetPrice = betBtn.previousElementSibling.querySelector('h2.cards-block__title');
-  let oldPrice = curBetPrice.textContent.split(' ')[2];
-  console.log(`betBtn = ${betBtn}`);
-  const addBetBtn = document.querySelector("button.add-bet");
-   addBetBtn.addEventListener('click', function (event) {
-        console.log(event.target);
+  const betBtn = document.getElementById("bet");  // создать ставку
+   betBtn.addEventListener('click', function () {
      let summa = document.getElementById("product-bet").value
-     let productId = betBtn.getAttribute('data-product');
-     console.log(summa);
+     let productId = betBtn.data-product;
      if (summa) {
        document.getElementById("product-bet").value = ''
        const cookieId = (document.cookie.match('(^|; )' + encodeURIComponent('userId') + '=([^;]+)') || []).pop() || null;
-       console.log(cookieId);
        fetch('/api/auth/create/bet', {
            method: 'POST',
            headers: {
                'Content-type': 'application/json'
            },
-           body: JSON.stringify({productId: productId, bet: summa, customerId: cookieId})
-       }).then(res => {
-            console.log(oldPrice);
-            fetch(`/api/auth/current/price/${productId}`, {method: 'GET', headers: {}}).then(res => res.json())
-            .then(data => {
-             curBetPrice.textContent = `Текущая ставка: ${data.curPrice}`;
-            console.log(curBetPrice);
-            if (String(oldPrice) === String(curBetPrice.textContent.split(' ')[2])){
-                         Swal.fire({
-                           icon: 'error',
-                           title: 'Ошибка',
-                           text: 'Ставка меньше текущей',
-                         })
-                     } })
-       });
+           body: {productId: productId, bet: summa, customerId: cookieId}
+       })
        } else {
            Swal.fire({
              icon: 'error',
@@ -129,7 +107,6 @@ function update_customer(){
            })
        }
     });
-    }))
 }
 
 
@@ -168,7 +145,7 @@ function update_customer(){
 
 update_product();
 
-function update_seller() {
+function update_seller(){
   let tbody = document.querySelector('.profile-right-seller')
   tbody.innerHTML = ""
   tbody.insertAdjacentHTML('beforeend',
@@ -251,91 +228,6 @@ document.querySelector('button.add-new').addEventListener('click', function () {
   }
 });
 }
-
-//function update_product() {
-//  let tbody = document.querySelector('.list')
-//  tbody.innerHTML = "";
-//  fetch('/api/auth/product/all', {method: 'GET', headers: {}}).then(res => res.json())
-//  .then(data => {
-//  let product = data;
-//  for (let i = 0; i < product.length; i++) {
-//      console.log(product[i]);
-//      let beginTime = new Date(product[i].startTime);
-//      let endTime = new Date(product[i].finishTime);
-//      fetch(`/api/auth/current/price/${product[i].productId}`, {method: 'GET', headers: {}}).then(res => res.json())
-//      .then(data => {
-//      const curPrice = data.curPrice;
-//      console.log(data);
-//      tbody.insertAdjacentHTML('beforeend',
-//        `
-//              <article class="cards-block__card">
-//                  <img class="cards-block__img" src=${product[i].urlPicture} alt="${product[i].name}" onerror="this.src='https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2F0fGVufDB8fDB8fHww'">
-//                  <div class="cards-block__txt">
-//                      <h2 class="cards-block__title">Название: ${product[i].name}</h2>
-//                  </div>
-//                  <div class="cards-block__txt">
-//                      <h2 class="cards-block__title">Начальная цена: ${product[i].price}</h2>
-//                  </div>
-//                  <div class="cards-block__txt">
-//                      <h2 class="cards-block__title">Время начала: ${beginTime.toLocaleString().slice(0, -3)}</h2>
-//                  </div>
-//                  <div class="cards-block__txt">
-//                      <h2 class="cards-block__title">Время окончания: ${endTime.toLocaleString().slice(0, -3)}</h2>
-//                  </div>
-//                  <div class="cards-block__txt">
-//                      <h2 class="cards-block__title">Минимальная ставка: ${product[i].minBet}</h2>
-//                  </div>
-//                  <div class="cards-block__txt">
-//                      <h2 class="cards-block__title">Текущая ставка: ${curPrice}</h2>
-//                  </div>
-//                  <button class="saw product_delete btn-primary" type="button" data-bs-toggle="modal"
-//                    data-bs-target="#secondModal" id="bet" data-product="${product[i].productId}">Сделать ставку</button>
-//
-//
-//              </article>
-//
-//              <div class="modal fade" id="secondModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-//                <div class="modal-dialog">
-//                  <div class="modal-content">
-//                    <div class="modal-header">
-//                      <h1 class="modal-title fs-5" id="exampleModalLabel">Сделать ставку</h1>
-//                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//                    </div>
-//                    <div class="modal-body">
-//                      <label for="product-bet" class="form-lable text-list">Размер ставки</label>
-//                      <input type="number" class="form-control mb-3" id="product-bet">
-//                      <button type="submit" class="add-bet add-button text-list">Сделать ставку</button>
-//                    </div>
-//                  </div>
-//                </div>
-//            </div>
-//              `
-//      )
-//      })
-//    }
-//    if(product.length){
-//      var secondModal = new bootstrap.Modal(document.getElementById('secondModal'), {
-//      keyboard: false})
-//
-//    document.querySelector('button.add-bet').addEventListener('click', function () {
-//      let product_bet = document.getElementById('product-bet').value
-//      if (product_bet) {
-//        document.getElementById('product-bet').value = ''
-//        let bet = JSON.parse(localStorage.getItem('bet'))
-//        bet.push(['bet_' + bet.length, product_bet])
-//        localStorage.setItem('bet', JSON.stringify(bet))
-//        // update_product()
-//        secondModal.hide()
-//      }
-//       }) })
-//       }else {
-//        Swal.fire({
-//          icon: 'error',
-//          title: 'Ошибка',
-//          text: 'Пожалуйста заполните все поля!',
-//        })
-//      }
-//    }
 
 function update_product() {
   let tbody = document.querySelector('.list')
@@ -424,6 +316,7 @@ function update_product() {
     }
     });
   }
+
   // let product = JSON.parse(localStorage.getItem('product'))
 
 
