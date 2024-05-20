@@ -1,4 +1,4 @@
 package com.example.demo.Seller.Controller;
 
-public record SellerResponse(String firstName, String lastName) {
+public record SellerResponse(Long sellerId, String firstName, String lastName) {
 }

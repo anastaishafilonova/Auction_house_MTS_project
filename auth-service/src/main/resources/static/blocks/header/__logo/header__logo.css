@@ -1,0 +1,8 @@
+.header__logo {
+    background-image: url(../../../images/logoHouse.svg);
+    scale: 2.5;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 142px;
+    height: 33px;
+}

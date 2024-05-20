@@ -1,0 +1,10 @@
+.profile-info__subname {
+    font-size: 18px;
+    font-weight: 400;
+    color: white;
+    margin: 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 336px;
+}

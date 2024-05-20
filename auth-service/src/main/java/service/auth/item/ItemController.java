@@ -3,11 +3,14 @@ package service.auth.item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import service.auth.user.UserRepository;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,6 +36,14 @@ public class ItemController {
         request,
         ProductResponse.class
     );
+  }
+
+  @GetMapping("/product/all")
+  public List getProducts() {
+    return restTemplate.getForEntity(
+        "http://localhost:5438/api/product/all",
+        List.class
+    ).getBody();
   }
 }
 

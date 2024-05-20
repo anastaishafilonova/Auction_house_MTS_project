@@ -4,21 +4,18 @@ import com.example.demo.Customer.Controller.CustomerResponse;
 import com.example.demo.Customer.CustomerRepository;
 import com.example.demo.Customer.CustomerService;
 import com.example.demo.Product.Controller.ProductResponse;
-import com.example.demo.Request.ProductRequestToCreate;
-import com.example.demo.Request.Request;
 import com.example.demo.Seller.Seller;
 import com.example.demo.Seller.SellerRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ProductService {
@@ -39,18 +36,17 @@ public class ProductService {
   }
 
   @Transactional
-  public ProductResponse createProduct(Request.RequestToCreateProduct request) {
-    Product product;
-    if (productRepository.findByName(request.getName()) != null) {
-      product = productRepository.findByName(request.getName());
+  public ProductResponse createProduct(String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet, String urlPicture) {
+    if (productRepository.findByName(name) != null) {
+      Product product = productRepository.findByName(name);
+      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet, urlPicture);
     } else {
-      Seller seller = sellerRepository.findById(request.getSellerId()).orElseThrow();
-      seller.addProduct(request.getName(), request.getPrice(), request.getStartTime(), request.getFinishTime(), request.getMinBet());
+      Seller seller = sellerRepository.findById(sellerId).orElseThrow();
+      seller.addProduct(name, price, startTime, finishTime, minBet, urlPicture);
       sellerRepository.save(seller);
-      product = productRepository.findByName(request.getName());
+      Product product = productRepository.findByName(name);
+      return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet, urlPicture);
     }
-    ProductCreateGateway.createProduct(productRepository.findByName(request.getName()).getProductId(), request);
-    return new ProductResponse(product.getProductId(), request.getName(), request.getPrice(), request.getSellerId(), request.getStartTime(), request.getFinishTime(), request.getMinBet());
   }
 
   @Transactional
@@ -70,12 +66,17 @@ public class ProductService {
     Product product = productRepository.findById(id).orElseThrow();
     product.setPrice(newPrice);
     productRepository.save(product);
-    return new ProductResponse(product.getProductId(), product.getName(), product.getPrice(), product.getSeller().getSellerId(), product.getStartTime(), product.getFinishTime(), product.getMinBet());
+    return new ProductResponse(product.getProductId(), product.getName(), product.getPrice(), product.getSeller().getSellerId(), product.getStartTime(), product.getFinishTime(), product.getMinBet(), product.getUrlPicture());
   }
 
   @Transactional
   public Long getSellerByProduct(Long id) {
     Product product = productRepository.findById(id).orElseThrow();
     return product.getSeller().getSellerId();
+  }
+
+  @Transactional
+  public ArrayList<Product> getAllProducts() {
+    return new ArrayList<>(productRepository.findAll());
   }
 }

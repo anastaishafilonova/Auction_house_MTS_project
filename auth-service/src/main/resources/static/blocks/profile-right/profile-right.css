@@ -1,0 +1,6 @@
+.profile-right {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    min-width: fit-content;
+}

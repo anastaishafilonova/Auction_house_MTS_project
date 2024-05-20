@@ -1,0 +1,7 @@
+.profile-left {
+    min-width: fit-content;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 100%;
+}
