@@ -68,15 +68,12 @@ public class UserController {
     String password = request.password();
     try {
       User user = userRepository.findByUsername(username).orElseThrow();
-      LOGGER.info(user.getPassword());
-      LOGGER.info(passwordEncoder.encode(password));
-      LOGGER.info(passwordEncoder.encode(password));
       if (passwordEncoder.matches(password, user.getPassword())) {
-        return new EnterUserResponse(user.getRoles().toArray()[0].toString());
+        return new EnterUserResponse(user.getRoles().toArray()[0].toString(), user.getId());
       }
-      return new EnterUserResponse("Пароль некорректен");
+      return new EnterUserResponse("Пароль некорректен", 1L);
     } catch (NoSuchElementException e) {
-      return new EnterUserResponse("Имя пользователя введено неверно");
+      return new EnterUserResponse("Имя пользователя введено неверно", 1L);
     }
   }
 }

@@ -80,6 +80,7 @@ function update_customer(){
     }
   }
   // document.getElementsByClassName("saw").style.display = "block"
+  const betBtn = document.getElementById("bet");
 }
 
 
@@ -322,8 +323,12 @@ enterBtn.addEventListener('click', function () {
                 })
         }
         else if (role == "SELLER") {
+          document.cookie = "userRole=" + role;
+          document.cookie = "userId=" + data.userId;
           update_seller()
         } else {
+          document.cookie = "userRole=" + role;
+          document.cookie = "userId=" + data.userId;
           update_seller()
           update_customer()
         }
@@ -337,5 +342,46 @@ enterBtn.addEventListener('click', function () {
   }
  });
 
-
 // пополнение баланса
+const increaseBtn = document.querySelector('button.increase-balance');
+increaseBtn.addEventListener('click', function () {
+  let summa = document.getElementById('people-increase').value
+  if (summa) {
+    document.getElementById('people-increase').value = ''
+    const cookieId = (document.cookie.match('(^|; )' + encodeURIComponent('userId') + '=([^;]+)') || []).pop() || null;
+    fetch(`/api/auth/put/${cookieId}/${summa}`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        }
+    })
+    } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Ошибка',
+          text: 'Пожалуйста заполните все поля!',
+        })
+    }
+ });
+
+ // снятие денег со счёта
+ const decreaseBtn = document.querySelector('button.decrease-balance');
+ decreaseBtn.addEventListener('click', function () {
+   let summa = document.getElementById('people-decrease').value
+   if (summa) {
+     document.getElementById('people-decrease').value = ''
+     const cookieId = (document.cookie.match('(^|; )' + encodeURIComponent('userId') + '=([^;]+)') || []).pop() || null;
+     fetch(`/api/auth/withdraw/${cookieId}/${summa}`, {
+         method: 'POST',
+         headers: {
+             'Content-type': 'application/json'
+         }
+     })
+     } else {
+         Swal.fire({
+           icon: 'error',
+           title: 'Ошибка',
+           text: 'Пожалуйста заполните все поля!',
+         })
+     }
+  });
