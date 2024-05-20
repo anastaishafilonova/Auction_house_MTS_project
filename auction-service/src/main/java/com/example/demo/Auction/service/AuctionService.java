@@ -6,11 +6,14 @@ import com.example.demo.Auction.dto.ProductRequestToUpdate;
 import com.example.demo.Auction.entity.Auction;
 import com.example.demo.Auction.repository.AuctionRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuctionService {
+  private static final Logger LOGGER = LoggerFactory.getLogger(AuctionService.class);
   private static AuctionRepository auctionRepository;
 
   @Autowired
@@ -40,7 +43,9 @@ public class AuctionService {
 
   @Transactional
   public static AuctionResponse increaseBet(long id, ProductRequestToUpdate request) {
+    LOGGER.info("Retrieved: " + request.bet() + " " + request.customerid() + " " + id);
     Auction auction = auctionRepository.findById(id).orElseThrow();
+
     if (request.bet() - auction.getCurprice() >= auction.getMinbet()
         && CheckBalanceGateway.checkBalance(request.customerid(), request.bet())) {
       auctionRepository.save(

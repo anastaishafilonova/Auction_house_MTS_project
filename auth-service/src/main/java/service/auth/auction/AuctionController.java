@@ -32,11 +32,11 @@ public class AuctionController {
   @PreAuthorize("hasAuthority('CUSTOMER')")
   @PostMapping("/create/bet")
   public void createBet(@RequestBody RequestToCreateBet request) {
-    restTemplate.postForEntity(
+    LOGGER.info("Retrieved: " + "Bet: " + request.getBet() + " CustomerId: " + request.getCustomerId() + " ProductId: " + request.getProductId());
+    restTemplate.put(
         "http://localhost:8082/api/auction/increase/bet/{id}",
-        new ProductRequestToUpdate(request.bet(), request.customerId()),
-        AuctionResponse.class,
-        Map.of("id", request.productId()));
+        new ProductRequestToUpdate(request.getBet(), request.getCustomerId()),
+        Map.of("id", request.getProductId()));
   }
 
   @GetMapping("/current/price/{productId}")
