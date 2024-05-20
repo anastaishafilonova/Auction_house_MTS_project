@@ -22,6 +22,8 @@ import java.util.List;
 public class ProductService {
   private ProductRepository productRepository;
   private SellerRepository sellerRepository;
+  @Autowired
+  private ProductCreateGateway productCreateGateway;
 
   @Autowired
   public ProductService(ProductRepository productRepository, SellerRepository sellerRepository) {
@@ -46,7 +48,7 @@ public class ProductService {
       seller.addProduct(name, price, startTime, finishTime, minBet, urlPicture);
       sellerRepository.save(seller);
       Product product = productRepository.findByName(name);
-      ProductCreateGateway.createProduct(
+      productCreateGateway.createProduct(
           product.getProductId(), new Request.RequestToCreateProduct(name, price, sellerId, startTime, finishTime, minBet, urlPicture));
       return new ProductResponse(product.getProductId(), name, price, sellerId, startTime, finishTime, minBet, urlPicture);
     }

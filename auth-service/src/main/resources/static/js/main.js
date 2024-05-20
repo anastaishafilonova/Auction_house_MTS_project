@@ -1,4 +1,3 @@
-
 var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
   keyboard: false
 })
@@ -37,6 +36,7 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
     document.getElementById('people-password').value = ''
     document.getElementsByName('people-role').value = ''
     let people = JSON.parse(localStorage.getItem('people'))
+    document.querySelector('#enterModal').style.display = "none";
     if (!people[0]) {
       people = [];
     }
@@ -56,7 +56,13 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
         document.cookie = "userId=" + userId;
     });
     const profile = document.querySelector('.profile');
+    const people_sign_up = document.querySelector('.profile__add-btn-sign');
+    const people_old_enter = document.querySelector('.profile__add-btn-enter');
+    const log_out = document.querySelector('.profile-right-enter');
     profile.style.display = "flex";
+    people_sign_up.style.display = "none";
+    people_old_enter.style.display = "none";
+    log_out.classList.remove("invisible-button");
     profile.querySelector('#name').textContent = firstName;
     profile.querySelector('#surname').textContent = lastName;
     profile.querySelector('#balance').textContent = '0 rub';
@@ -75,6 +81,20 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
     })
   }
 })
+
+document.querySelector('button.profile__add-btn-log-out').addEventListener('click', function () {
+    const profile = document.querySelector('.profile');
+    const people_sign_up = document.querySelector('.profile__add-btn-sign');
+    const people_old_enter = document.querySelector('.profile__add-btn-enter');
+    const log_out = document.querySelector('.profile-right-enter');
+    const profile__add_button = document.querySelector('.profile__add-btn');
+    profile.style.display = "none";
+    people_sign_up.style.display = "inline-block";
+    people_old_enter.style.display = "inline-block";
+    log_out.classList.add("invisible-button");
+    profile__add_button.style.display = "none";
+})
+
 
 function update_customer(){
   document.getElementById("product").style.display = "none"
@@ -110,40 +130,9 @@ function update_customer(){
 }
 
 
-// // Сохранение нового товара
-// document.querySelector('button.add-new').addEventListener('click', function () {
-//   let name = document.getElementById('product-name').value
-//   let price = document.getElementById('product-price').value
-//   let startTime = document.getElementById('localdate-start').value
-//   let finishTime = document.getElementById('localdate-finish').value
-//   let minBet = document.getElementById('product-min-bet').value
-//   let url = document.getElementById('product-url').value
-//   if (name && price && startTime && finishTime && minBet && url) {
-//     document.getElementById('product-name').value = ''
-//     document.getElementById('product-price').value = ''
-//     document.getElementById('localdate-start').value = ''
-//     document.getElementById('localdate-finish').value = ''
-//     document.getElementById('product-min-bet').value = ''
-//     document.getElementById('product-url').value = ''
-//     let product = JSON.parse(localStorage.getItem('product'))
-//     if (!product[0]) {
-//       product = [];
-//     }
-//     product.push(['product_' + product.length, name, price, startTime, finishTime, minBet, url])
-//     localStorage.setItem('product', JSON.stringify(product))
-//     // update_product()
-//     myModal.hide()
-//   } else {
-//     Swal.fire({
-//       icon: 'error',
-//       title: 'Ошибка',
-//       text: 'Пожалуйста заполните все поля!',
-//     })
-//   }
-// })
-
 
 update_product();
+
 
 function update_seller(){
   let tbody = document.querySelector('.profile-right-seller')
@@ -202,6 +191,8 @@ document.querySelector('button.add-new').addEventListener('click', function () {
     document.getElementById('localdate-finish').value = ''
     document.getElementById('product-min-bet').value = ''
     document.getElementById('product-url').value = ''
+    document.querySelector('#exampleModal').style.display = "none";
+    myModal.hide()
 //    let product = JSON.parse(localStorage.getItem('product'))
 //    if (!product[0]) {
 //      product = [];
@@ -218,7 +209,7 @@ document.querySelector('button.add-new').addEventListener('click', function () {
 
 //    product.push(['product_' + product.length, name, price, startTime, finishTime, minBet, url])
 //    localStorage.setItem('product', JSON.stringify(product))
-    myModal.hide()
+
   } else {
     Swal.fire({
       icon: 'error',
@@ -228,6 +219,7 @@ document.querySelector('button.add-new').addEventListener('click', function () {
   }
 });
 }
+
 
 function update_product() {
   let tbody = document.querySelector('.list')
@@ -239,6 +231,8 @@ function update_product() {
       console.log(product[i]);
       let beginTime = new Date(product[i].startTime);
       let endTime = new Date(product[i].finishTime);
+
+
       fetch(`/api/auth/current/price/${product[i].productId}`, {method: 'GET', headers: {}}).then(res => res.json())
       .then(data => {
       const curPrice = data.curPrice;
@@ -303,6 +297,7 @@ function update_product() {
         let bet = JSON.parse(localStorage.getItem('bet'))
         bet.push(['bet_' + bet.length, product_bet])
         localStorage.setItem('bet', JSON.stringify(bet))
+        //document.querySelector('.add-bet').style.display = "none";
         // update_product()
         secondModal.hide()
       } else {
@@ -316,6 +311,7 @@ function update_product() {
     }
     });
   }
+
 
   // let product = JSON.parse(localStorage.getItem('product'))
 
@@ -335,6 +331,7 @@ enterBtn.addEventListener('click', function () {
   if (login && password) {
     document.getElementById('people-login1').value = ''
     document.getElementById('people-password1').value = ''
+    //document.querySelector('.enter-old-people').style.display = "none";
     console.log(login + " " + password)
     fetch('/api/enter', {
         method: 'POST',
@@ -395,6 +392,7 @@ increaseBtn.addEventListener('click', function () {
   let summa = document.getElementById('people-increase').value
   if (summa) {
     document.getElementById('people-increase').value = ''
+    //document.querySelector('.increase-balance').style.display = "none";
     const cookieId = (document.cookie.match('(^|; )' + encodeURIComponent('userId') + '=([^;]+)') || []).pop() || null;
     fetch(`/api/auth/put/${cookieId}/${summa}`, {
         method: 'POST',
@@ -423,6 +421,7 @@ increaseBtn.addEventListener('click', function () {
    let summa = document.getElementById('people-decrease').value
    if (summa) {
      document.getElementById('people-decrease').value = ''
+     //document.querySelector('.').style.display = "none";
      const cookieId = (document.cookie.match('(^|; )' + encodeURIComponent('userId') + '=([^;]+)') || []).pop() || null;
      fetch(`/api/auth/withdraw/${cookieId}/${summa}`, {
          method: 'POST',
@@ -443,3 +442,5 @@ increaseBtn.addEventListener('click', function () {
          })
      }
   });
+
+
