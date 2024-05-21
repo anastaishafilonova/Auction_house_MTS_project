@@ -4,11 +4,14 @@ import com.example.demo.Customer.Customer;
 import com.example.demo.Seller.Seller;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "product")
 public class Product {
+  private static final Logger logger = LoggerFactory.getLogger(Product.class);
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long productId;
@@ -20,11 +23,13 @@ public class Product {
   @Column(name = "price")
   private int price;
 
-  @Column(name = "name")
-  private Long customerId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "seller_id")
+  private Seller seller;
 
-  @Column(name = "seller_id")
-  private Long sellerId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id")
+  private Customer customer;
 
   @Column(name = "start_time")
   private LocalDateTime startTime;
@@ -35,18 +40,32 @@ public class Product {
   @Column(name = "status")
   private boolean status;
 
-  @Column(name = "minBet")
+  @Column(name = "min_bet")
   @NotNull(message = "minBet can not be null")
   private int minBet;
 
-  public Product(Long productId, String name, int price, Long sellerId, LocalDateTime startTime, LocalDateTime finishTime, int minBet) {
-    this.productId = productId;
+  @Column(name = "url_picture")
+  @NotNull(message = "urlPicture can not be null")
+  private String urlPicture;
+
+  public Product(String name, int price, Seller seller, LocalDateTime startTime, LocalDateTime finishTime, int minBet, String urlPicture) {
     this.name = name;
     this.price = price;
-    this.sellerId = sellerId;
     this.startTime = startTime;
     this.finishTime = finishTime;
     this.minBet = minBet;
+    this.seller = seller;
+    this.urlPicture = urlPicture;
+  }
+
+  protected Product() {}
+
+  public String getUrlPicture() {
+    return urlPicture;
+  }
+
+  public void setUrlPicture(String urlPicture) {
+    this.urlPicture = urlPicture;
   }
 
   public Long getProductId() {
@@ -73,21 +92,20 @@ public class Product {
     this.price = price;
   }
 
-
-  public Long getCustomerId() {
-    return customerId;
+  public Seller getSeller() {
+    return seller;
   }
 
-  public void setCustomerId(Long customerId) {
-    this.customerId = customerId;
+  public void setSeller(Seller seller) {
+    this.seller = seller;
   }
 
-  public Long getSellerId() {
-    return sellerId;
+  public Customer getCustomer() {
+    return customer;
   }
 
-  public void setSellerId(Long sellerId) {
-    this.sellerId = sellerId;
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
   }
 
   public LocalDateTime getStartTime() {
@@ -121,4 +139,18 @@ public class Product {
   public void setMinBet(int minBet) {
     this.minBet = minBet;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Product)) return false;
+    Product product = (Product) o;
+    return productId != null && productId.equals(product.productId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Product.class.hashCode();
+  }
+
 }

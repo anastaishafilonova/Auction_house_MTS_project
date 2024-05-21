@@ -1,0 +1,1 @@
+ALTER TABLE product ADD url_picture TEXT

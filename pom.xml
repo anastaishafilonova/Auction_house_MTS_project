@@ -9,7 +9,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>auction-service</module>
         <module>item-service</module>
+        <module>payment-service</module>
+        <module>auth-service</module>
     </modules>
 
 </project>
