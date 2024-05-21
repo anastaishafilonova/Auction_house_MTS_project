@@ -30,7 +30,7 @@ public class ProductCreateGateway {
     @RateLimiter(name = "createProduct", fallbackMethod = "fallbackRateLimiter")
     @CircuitBreaker(name = "createProduct", fallbackMethod = "fallbackCircuitBreaker")
     @Retry(name = "createProduct")
-    public static void createProduct(long productId, Request.RequestToCreateProduct request) {
+    public Boolean createProduct(long productId, Request.RequestToCreateProduct request) {
         try {
             ProductRequestToCreate productRequestToCreate = new ProductRequestToCreate(productId, request.getStartTime(), request.getFinishTime(), request.getMinBet(), request.getPrice(), -1, request.getSellerId());
             HttpHeaders headers = new HttpHeaders();
@@ -44,7 +44,7 @@ public class ProductCreateGateway {
         } catch (RestClientException e) {
             throw e;
         }
-
+        return true;
     }
 
     public boolean fallbackRateLimiter(String requestId, RequestNotPermitted e) {
