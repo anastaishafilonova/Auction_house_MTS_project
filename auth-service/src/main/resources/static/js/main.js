@@ -1,4 +1,3 @@
-
 var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
   keyboard: false
 })
@@ -6,7 +5,6 @@ var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
 var enterModal = new bootstrap.Modal(document.getElementById('enterModal'), {
   keyboard: false
 })
-
 
 
 // Добавить счетчик числа товаров в локальное хранилище
@@ -37,6 +35,7 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
     document.getElementById('people-password').value = ''
     document.getElementsByName('people-role').value = ''
     let people = JSON.parse(localStorage.getItem('people'))
+    document.querySelector('#enterModal').style.display = "none";
     if (!people[0]) {
       people = [];
     }
@@ -56,7 +55,13 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
         document.cookie = "userId=" + userId;
     });
     const profile = document.querySelector('.profile');
+    const people_sign_up = document.querySelector('.profile__add-btn-sign');
+    const people_old_enter = document.querySelector('.profile__add-btn-enter');
+    const log_out = document.querySelector('.profile-right-enter');
     profile.style.display = "flex";
+    people_sign_up.style.display = "none";
+    people_old_enter.style.display = "none";
+    log_out.classList.remove("invisible-button");
     profile.querySelector('#name').textContent = firstName;
     profile.querySelector('#surname').textContent = lastName;
     profile.querySelector('#balance').textContent = '0 rub';
@@ -71,10 +76,24 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
     Swal.fire({
       icon: 'error',
       title: 'Ошибка',
-      text: 'Пожалуйста заполните все поля!',
+      text: 'Пожалуйста, заполните все поля!',
     })
   }
 })
+
+document.querySelector('button.profile__add-btn-log-out').addEventListener('click', function () {
+      const profile = document.querySelector('.profile');
+      const people_sign_up = document.querySelector('.profile__add-btn-sign');
+      const people_old_enter = document.querySelector('.profile__add-btn-enter');
+      const log_out = document.querySelector('.profile-right-enter');
+      const profile__add_button = document.querySelector('.profile__add-btn');
+      profile.style.display = "none";
+      people_sign_up.style.display = "inline-block";
+      people_old_enter.style.display = "inline-block";
+      log_out.classList.add("invisible-button");
+      profile__add_button.style.display = "none";
+  })
+
 
 function update_customer(){
   document.getElementById("product").style.display = "none"
@@ -125,7 +144,7 @@ function update_customer(){
            Swal.fire({
              icon: 'error',
              title: 'Ошибка',
-             text: 'Пожалуйста заполните все поля!',
+             text: 'Пожалуйста, заполните все поля!',
            })
        }
     });
@@ -225,6 +244,8 @@ document.querySelector('button.add-new').addEventListener('click', function () {
     document.getElementById('localdate-finish').value = ''
     document.getElementById('product-min-bet').value = ''
     document.getElementById('product-url').value = ''
+    document.querySelector('#exampleModal').style.display = "none";
+    myModal.hide()
 //    let product = JSON.parse(localStorage.getItem('product'))
 //    if (!product[0]) {
 //      product = [];
@@ -241,12 +262,11 @@ document.querySelector('button.add-new').addEventListener('click', function () {
 
 //    product.push(['product_' + product.length, name, price, startTime, finishTime, minBet, url])
 //    localStorage.setItem('product', JSON.stringify(product))
-    myModal.hide()
   } else {
     Swal.fire({
       icon: 'error',
       title: 'Ошибка',
-      text: 'Пожалуйста заполните все поля!',
+      text: 'Пожалуйста, заполните все поля!',
     })
   }
 });
@@ -417,7 +437,7 @@ function update_product() {
         Swal.fire({
           icon: 'error',
           title: 'Ошибка',
-          text: 'Пожалуйста заполните все поля!',
+          text: 'Пожалуйста, заполните все поля!',
         })
       }
     })
@@ -491,7 +511,7 @@ enterBtn.addEventListener('click', function () {
         Swal.fire({
           icon: 'error',
           title: 'Ошибка',
-          text: 'Пожалуйста заполните все поля!',
+          text: 'Пожалуйста, заполните все поля!',
         })
   }
  });
@@ -502,6 +522,7 @@ increaseBtn.addEventListener('click', function () {
   let summa = document.getElementById('people-increase').value
   if (summa) {
     document.getElementById('people-increase').value = ''
+    //document.querySelector('.increase-balance').style.display = "none";
     const cookieId = (document.cookie.match('(^|; )' + encodeURIComponent('userId') + '=([^;]+)') || []).pop() || null;
     fetch(`/api/auth/put/${cookieId}/${summa}`, {
         method: 'POST',
@@ -519,7 +540,7 @@ increaseBtn.addEventListener('click', function () {
         Swal.fire({
           icon: 'error',
           title: 'Ошибка',
-          text: 'Пожалуйста заполните все поля!',
+          text: 'Пожалуйста, заполните все поля!',
         })
     }
  });
