@@ -64,7 +64,7 @@ document.querySelector('button.add-new-people').addEventListener('click', functi
     log_out.classList.remove("invisible-button");
     profile.querySelector('#name').textContent = firstName;
     profile.querySelector('#surname').textContent = lastName;
-    profile.querySelector('#balance').textContent = '0 rub';
+    profile.querySelector('#balance').textContent = '0 руб';
     if (role == "SELLER") {
       update_seller()
     } else {
@@ -244,7 +244,6 @@ document.querySelector('button.add-new').addEventListener('click', function () {
     document.getElementById('localdate-finish').value = ''
     document.getElementById('product-min-bet').value = ''
     document.getElementById('product-url').value = ''
-    document.querySelector('#exampleModal').style.display = "none";
     myModal.hide()
 //    let product = JSON.parse(localStorage.getItem('product'))
 //    if (!product[0]) {
@@ -462,6 +461,12 @@ enterBtn.addEventListener('click', function () {
   if (login && password) {
     document.getElementById('people-login1').value = ''
     document.getElementById('people-password1').value = ''
+    const people_sign_up = document.querySelector('.profile__add-btn-sign');
+    const people_old_enter = document.querySelector('.profile__add-btn-enter');
+    const log_out = document.querySelector('.profile-right-enter');
+    people_sign_up.style.display = "none";
+    people_old_enter.style.display = "none";
+    log_out.classList.remove("invisible-button");
     console.log(login + " " + password)
     fetch('/api/enter', {
         method: 'POST',
@@ -490,7 +495,7 @@ enterBtn.addEventListener('click', function () {
                 }).then(resp => resp.json())
                 .then(result => {
                     let balance = result.balance;
-                    profile.querySelector('#balance').textContent = `${balance || 0} rub`;
+                    profile.querySelector('#balance').textContent = `${balance || 0} руб`;
                     })
             profile.querySelector('#name').textContent = data.firstName;
             profile.querySelector('#surname').textContent = data.lastName;
@@ -532,7 +537,7 @@ increaseBtn.addEventListener('click', function () {
     }).then(res => {
         if (res.ok) {
             const profile = document.querySelector('.profile');
-            profile.querySelector('#balance').textContent = `${Number(profile.querySelector('#balance').textContent.split(' rub')[0]) + Number(summa)} rub`;
+            profile.querySelector('#balance').textContent = `${Number(profile.querySelector('#balance').textContent.split(' руб')[0]) + Number(summa)} руб`;
         }
     })
 
@@ -560,7 +565,7 @@ increaseBtn.addEventListener('click', function () {
      }).then(res => {
         if (res.ok) {
             const profile = document.querySelector('.profile');
-            profile.querySelector('#balance').textContent = `${Number(profile.querySelector('#balance').textContent.split(' rub')[0]) - Number(summa)} rub`;
+            profile.querySelector('#balance').textContent = `${Number(profile.querySelector('#balance').textContent.split(' руб')[0]) - Number(summa)} руб`;
         }
      })
      } else {
