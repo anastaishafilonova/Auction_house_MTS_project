@@ -1,3 +1,3 @@
-package com.example.demo.Auction.dto;
+package com.example.demo.dto;
 
 public record CurrentPriceInfo(Long productId, int curPrice) {}

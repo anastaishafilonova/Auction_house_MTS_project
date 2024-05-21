@@ -1,8 +1,8 @@
-package com.example.demo.Auction.controller;
+package com.example.demo.controller;
 
-import com.example.demo.Auction.entity.Auction;
-import com.example.demo.Auction.repository.AuctionRepository;
-import com.example.demo.Auction.service.PayService;
+import com.example.demo.entity.Auction;
+import com.example.demo.repository.AuctionRepository;
+import com.example.demo.service.PayService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

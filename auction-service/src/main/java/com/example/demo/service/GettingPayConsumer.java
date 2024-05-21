@@ -1,4 +1,4 @@
-package com.example.demo.Auction.service;
+package com.example.demo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

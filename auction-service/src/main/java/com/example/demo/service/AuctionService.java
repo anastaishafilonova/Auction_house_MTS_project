@@ -1,10 +1,10 @@
-package com.example.demo.Auction.service;
+package com.example.demo.service;
 
-import com.example.demo.Auction.dto.AuctionResponse;
-import com.example.demo.Auction.dto.ProductRequestToCreate;
-import com.example.demo.Auction.dto.ProductRequestToUpdate;
-import com.example.demo.Auction.entity.Auction;
-import com.example.demo.Auction.repository.AuctionRepository;
+import com.example.demo.dto.AuctionResponse;
+import com.example.demo.dto.ProductRequestToCreate;
+import com.example.demo.dto.ProductRequestToUpdate;
+import com.example.demo.entity.Auction;
+import com.example.demo.repository.AuctionRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

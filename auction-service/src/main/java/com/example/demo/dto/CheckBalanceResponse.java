@@ -1,4 +1,4 @@
-package com.example.demo.Auction.dto;
+package com.example.demo.dto;
 
 public record CheckBalanceResponse(Long userId, int balance) {
 }

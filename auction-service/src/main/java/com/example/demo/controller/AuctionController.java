@@ -1,10 +1,9 @@
-package com.example.demo.Auction.controller;
+package com.example.demo.controller;
 
 
-import com.example.demo.Auction.dto.*;
-import com.example.demo.Auction.repository.AuctionRepository;
-import com.example.demo.Auction.entity.Auction;
-import com.example.demo.Auction.service.AuctionService;
+import com.example.demo.repository.AuctionRepository;
+import com.example.demo.service.AuctionService;
+import com.example.demo.dto.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;

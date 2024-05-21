@@ -1,4 +1,4 @@
-package com.example.demo.Auction.entity;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
