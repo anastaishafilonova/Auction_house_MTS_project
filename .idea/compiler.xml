@@ -6,14 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="item-service" />
         <module name="payment" />
         <module name="auth" />
+      </profile>
+      <profile name="Annotation profile for base-project" enabled="true">
+        <sourceOutputDir name="../target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="item-service" />
         <module name="demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="base-project" target="1.5" />
       <module name="book-service" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -21,9 +25,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth" options="-parameters" />
       <module name="book-service" options="-parameters" />
-      <module name="demo" options="-parameters" />
+      <module name="demo" options="" />
       <module name="item-service" options="-parameters" />
-      <module name="payment" options="-parameters" />
+      <module name="payment" options="" />
     </option>
   </component>
 </project>
